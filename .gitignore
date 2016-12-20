@@ -1,0 +1,12 @@
+#NPM
+node_modules
+npm-debug.log
+
+#Yarn
+yarn.lock
+
+#Jetbrains IDE
+.idea
+
+#Output files
+dist
