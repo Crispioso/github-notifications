@@ -2,8 +2,14 @@ import express from 'express'
 import path from 'path';
 import fetch from 'node-fetch';
 const app = express();
-const port = 3000;
-const AUTH_TOKEN = '943bd2154ff7f71da57979762293007e321021b1';
+const config = {
+    port: process.env.PORT || 3000,
+    auth_token: process.env.OAUTH_TOKEN
+};
+
+if (!config.auth_token) {
+    throw('OAUTH_TOKEN must be provided to use Github API');
+}
 
 // Database config
 import MongoClient from 'mongodb';
@@ -37,12 +43,19 @@ const findDocuments = function(db, callback) {
     });
 };
 
-fetch('https://api.github.com/notifications?access_token=' + AUTH_TOKEN).then(response => response.json()).then(response => {
-    console.log("Fetch notifications from Github API succesful");
+fetch('https://api.github.com/notifications?access_token=' + config.auth_token).then(response => {
+    if (response.status !== 200) {
+        console.log("Expected 200 response from Github API, instead got '%s %s'", response.status, response.statusText);
+        throw('');
+    }
+
+    return response.json();
+}).then(response => {
+
+    console.log("Fetch notifications from Github API successful");
 
     MongoClient.connect(database, function(err, db) {
         assert.equal(null, err);
-        console.log("Connected to database succesfully");
 
         insertDocuments(db, response, function() {
             db.close();
@@ -60,7 +73,6 @@ app.get('/', function(req, res){
 app.get('/notificationsData', function(req, res) {
     MongoClient.connect(database, function(err, db) {
         assert.equal(null, err);
-        console.log("Connected correctly to server");
 
         findDocuments(db, function(notifications) {
             res.json(notifications);
@@ -69,8 +81,8 @@ app.get('/notificationsData', function(req, res) {
     });
 });
 
-app.listen(port, function () {
-    console.log('Preact app started \nPORT: %s', port);
+app.listen(config.port, function () {
+    console.log('Preact app started \nPORT: %s\nOAUTH_TOKEN: %s\n', config.port, config.auth_token);
 });
 
 app.use(express.static('dist'));
