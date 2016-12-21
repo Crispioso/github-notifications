@@ -1,5 +1,5 @@
 import { h, Component } from 'preact';
-import Checkbox from './Checkbox.jsx';
+import NotificationList from './NotificationList.jsx';
 import { connect } from 'preact-redux';
 
 class App extends Component {
@@ -24,8 +24,8 @@ class App extends Component {
         return (
             <div>
                 {this.state.dataFetched ?
-                    <Checkbox /> :
-                    <div class="loader">Loading...</div>
+                    <NotificationList notifications={this.state.notifications}/>
+                    : <div class="loader">Loading...</div>
                 }
             </div>
         )

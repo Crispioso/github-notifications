@@ -8,7 +8,7 @@ require('./scss/main.scss');
 function init() {
     fetchNotifications();
 
-    let App = require('./views/App.jsx').default;
+    let App = require('./components/App.jsx').default;
     render(
         <Provider store={store}>
             <App />
