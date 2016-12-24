@@ -14,14 +14,34 @@ if (!config.auth_token) {
 // Database config
 import MongoClient from 'mongodb';
 import assert from 'assert';
-const database = 'mongodb://localhost:27017/myproject';
+const database = 'mongodb://localhost:27017/github-notifications';
+
+const updateAll = function(db, notifications, callback) {
+    const collection = db.collection('notifications');
+
+    collection.updateMany({github_id: 1}, {$set: notifications}, { upsert:true }, function(err, updatedItems) {
+        assert.equal(null, err);
+        console.log(updatedItems);
+        callback(updatedItems);
+    });
+};
+
+const updateOne = function(db, id, notification, callback) {
+    const collection = db.collection('notifications');
+
+    collection.updateOne({github_id: notification.github_id}, {$set: notification, $currentDate: {lastModified: true}}, { upsert:true }, function(err, updatedItems) {
+        assert.equal(null, err);
+        callback(updatedItems);
+    });
+};
 
 // Store in database
-const insertDocuments = function(db, notificationsData, callback) {
-    // Get the documents collection
+const update = function(db, notificationsData, callback) {
+    // Get the notifications collection
     const collection = db.collection('notifications');
-    // Insert some documents
-    collection.insertMany(notificationsData, function(err, result) {
+
+    // Insert some notifications
+    collection.updateMany(notificationsData, function(err, result) {
         assert.equal(err, null);
         assert.equal(notificationsData.length, result.result.n);
         assert.equal(notificationsData.length, result.ops.length);
@@ -43,27 +63,72 @@ const findDocuments = function(db, callback) {
     });
 };
 
+const createIndexes = function(db) {
+    const collection = db.collection('notifications');
+
+    collection.createIndex({ github_id: 1 }, function(error, result) {
+        if (error) {
+            console.log("Error whilst creating index: %s", error);
+        }
+    })
+};
+
+
 fetch('https://api.github.com/notifications?access_token=' + config.auth_token).then(response => {
     if (response.status !== 200) {
         console.log("Expected 200 response from Github API, instead got '%s %s'", response.status, response.statusText);
         throw('');
     }
-
     return response.json();
 }).then(response => {
-
-    console.log("Fetch notifications from Github API successful");
-
     MongoClient.connect(database, function(err, db) {
         assert.equal(null, err);
 
-        insertDocuments(db, response, function() {
-            db.close();
-        });
+        createIndexes(db);
+
+        const responseLength = response.length;
+        const dataModel = {
+            _id: 0,
+            github_id: 0,
+            repo_id: 0,
+            repo_full_name: '',
+            repo_url: '',
+            title: '',
+            url: '',
+            type: '',
+            unread: true,
+            favourite: false,
+            archived: false,
+            reason: '',
+            updated_at: '',
+            last_read_at: ''
+        };
+        let i = 0;
+
+        for (i; i < responseLength; i++) {
+            let thisObj = Object.assign({}, dataModel);
+            thisObj._id = response[i].id;
+            thisObj.github_id = response[i].id;
+            thisObj.repo_id = response[i].repository.id;
+            thisObj.repo_full_name = response[i].repository.full_name;
+            thisObj.repo_url = response[i].repository.html_url;
+            thisObj.title = response[i].subject.title;
+            thisObj.url = response[i].subject.url;
+            thisObj.type = response[i].subject.type;
+            thisObj.unread = response[i].unread;
+            thisObj.reason = response[i].reason;
+            thisObj.updated_at = response[i].updated_at;
+            thisObj.last_read_at = response[i].last_read_at;
+
+            updateOne(db, response[i].id, thisObj, function() {});
+        }
+
+        db.close();
     });
 }).catch(error => {
     console.log("Error getting notifications data from Github API \n%s", error);
 });
+
 
 app.get('/', function(req, res){
     res.sendFile(path.join(__dirname+'/index.html'));

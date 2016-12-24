@@ -13,13 +13,14 @@ class NotificationList extends Component {
                 return;
             }
             
-            return <NotificationItem title={notification.subject.title} type={notification.subject.type} owner={notification.repository.owner.login} repo={notification.repository.name} repo-url={notification.repository.url} date={notification.updated_at} />
+            return <NotificationItem title={notification.title} type={notification.type} repo={notification.repo_full_name} repo-url={notification.repo_url} date={notification.updated_at} />
         });
     }
 
     render() {
         return (
             <div>
+                <p>You have {this.props.notifications.length} notifications</p>
                 { this.buildNotifications() }
             </div>
         )
