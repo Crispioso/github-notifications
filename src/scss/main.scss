@@ -1,18 +1,39 @@
- #app {
-     //color: red;
+ //#app {
+ //    //color: red;
+ //}
+
+ //.body {
+ //    font-size: 21px;
+ //    font-family: 'Open Sans', sans-serif;
+ //}
+ //
+ //.notification {
+ //   &:first-child {
+ //       border-top: 1px solid lightgrey;
+ //   }
+ //
+ //    border-bottom: 1px solid lightgray;
+ //    padding-top: 8px;
+ //    padding-bottom: 8px;
+ //}
+
+ .main {
+     padding-top: 16px;
  }
 
- .body {
-     font-size: 21px;
-     font-family: 'Open Sans', sans-serif;
+ .header {
+    background: white;
+    color: #757575;
+ }
+
+ .mdl-layout__drawer-button {
+     color: #757575 !important;
+ }
+
+ .title {
+     font-size: 22px;
  }
 
  .notification {
-    &:first-child {
-        border-top: 1px solid lightgrey;
-    }
-
-     border-bottom: 1px solid lightgray;
-     padding-top: 8px;
-     padding-bottom: 8px;
+     padding: 16px 40px;
  }

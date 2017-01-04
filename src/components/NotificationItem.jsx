@@ -14,15 +14,15 @@ class NotificationItem extends Component {
 
     convertUTCToString(date) {
         let dateString = new Date(date);
-        const weekdays = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
+        const weekdays = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
         const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
 
-        return weekdays[dateString.getDay()] + " " + dateString.getDate() + " " + months[dateString.getMonth()] + " " + dateString.getFullYear() + " [" + dateString.getHours() + ":" + dateString.getMinutes() + "]";
+        return weekdays[dateString.getDay()] + " " + dateString.getDate() + " " + months[dateString.getMonth()] + " " + dateString.getFullYear() + " [" + dateString.getHours() + ":" + (dateString.getMinutes().toString().length === 1 ? ("0" + dateString.getMinutes()) : dateString.getMinutes()) + "]";
     }
 
     render() {
         return (
-            <div className="notification">{this.props.title} | {this.props.owner} | {this.props.repo} | {this.props.type} | {this.convertUTCToString(this.props.date)}</div>
+            <div className="notification">{this.props.title} | {this.props.repoName} | {this.props.type} | {this.convertUTCToString(this.props.date)}</div>
         )
     }
 }

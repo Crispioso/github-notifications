@@ -1,6 +1,9 @@
 import { h, Component } from 'preact';
 import NotificationList from './NotificationList.jsx';
 import { connect } from 'preact-redux';
+import Loader from './Loader.jsx';
+import Filters from './Filters.jsx'
+import Header from './Header.jsx'
 
 class App extends Component {
     constructor(props){
@@ -22,11 +25,17 @@ class App extends Component {
 
     render() {
         return (
-            <div>
-                {this.state.dataFetched ?
-                    <NotificationList notifications={this.state.notifications}/>
-                    : <div class="loader">Loading...</div>
-                }
+            <div className="mdl-layout mdl-js-layout mdl-layout--fixed-drawer mdl-layout--fixed-header">
+                <Header/>
+                <Filters/>
+                <main className="main mdl-layout__content mdl-color--grey-100">
+                    <div className="page-content">
+                        {this.state.dataFetched ?
+                            <NotificationList notifications={this.state.notifications}/>
+                            : <Loader/>
+                        }
+                    </div>
+                </main>
             </div>
         )
     }

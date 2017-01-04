@@ -3,6 +3,7 @@ import { createStore } from 'redux';
 const initialState = {
     checked: true,
     dataFetched: false,
+    unreadCount: 0,
     notifications: []
 };
 
@@ -16,6 +17,11 @@ function reducer(state = initialState, action) {
         case ('ADD_NOTIFICATIONS'): {
             return Object.assign({}, state, {
                 notifications: action.notifications
+            })
+        }
+        case ('UPDATE_UNREAD_COUNT'): {
+            return Object.assign({}, state, {
+                unreadCount: action.unreadCount
             })
         }
         case ('TOGGLE_CHECKED'): {
