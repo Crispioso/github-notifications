@@ -6,21 +6,21 @@ class NotificationList extends Component {
         super(props)
     }
 
-    buildNotifications() {
-        const notifications = this.props.notifications;
-        return notifications.map(notification => {
-            if (!notification.unread) {
-                return;
-            }
-            
-            return <NotificationItem title={notification.title} type={notification.type} repoId={notification.repo_id} repoName={notification.repo_full_name} url={notification.url} date={notification.updated_at} />
-        });
-    }
-
     render() {
+        const notifications = this.props.notifications;
+
         return (
             <div>
-                { this.buildNotifications() }
+                {
+                    notifications.map(notification => {
+                        if (notification.unread) {
+                            return <NotificationItem title={notification.title} type={notification.type}
+                                                     repoId={notification.repo_id}
+                                                     repoName={notification.repo_full_name} url={notification.url}
+                                                     date={notification.updated_at}/>
+                        }
+                    })
+                }
             </div>
         )
     }

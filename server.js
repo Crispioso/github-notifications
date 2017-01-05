@@ -26,11 +26,11 @@ const updateOne = function(db, id, notification, callback) {
 };
 
 // Retrieve from database
-const findDocuments = function(db, callback) {
+const findDocuments = function(db, query, callback) {
     // Get the documents collection
     const collection = db.collection('notifications');
     // Find some documents
-    collection.find({}).toArray(function(err, docs) {
+    collection.find(query).toArray(function(err, docs) {
         assert.equal(err, null);
         callback(docs);
     });
@@ -121,10 +121,11 @@ app.get('/', function(req, res){
 });
 
 app.get('/notificationsData', function(req, res) {
+
     MongoClient.connect(database, function(err, db) {
         assert.equal(null, err);
 
-        findDocuments(db, function(notifications) {
+        findDocuments(db, buildDBQuery(req.query), function(notifications) {
             const response = addNotificationsMetadata(notifications);
             res.json(response);
             db.close();
@@ -151,4 +152,31 @@ function addNotificationsMetadata(notifications) {
     });
 
     return combinedObject;
+}
+
+function buildDBQuery(parameters) {
+    const parametersArray = Object.keys(parameters);
+    const parameterToDBProperty = {
+        repoID: "repo_id",
+        type: "type"
+    };
+    let DBQuery = {};
+
+    if (parametersArray.length <= 0) {
+        return {}
+    }
+
+    parametersArray.forEach(function(property) {
+        DBQuery[parameterToDBProperty[property]] = parameters[property];
+
+        // Do any type changing (eg string to int)
+        if (property === "repoID") {
+            DBQuery[parameterToDBProperty[property]] = parseInt(DBQuery[parameterToDBProperty[property]]);
+        }
+    });
+
+    console.log("Database query: ");
+    console.log(DBQuery);
+
+    return DBQuery;
 }
