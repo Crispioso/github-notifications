@@ -1,7 +1,7 @@
 {
-  "name": "inferno-boilerplate",
+  "name": "github-notifications",
   "version": "0.0.1",
-  "description": "A basic boilerplate to get you started with Inferno + Inferno Router + JSX",
+  "description": "An inferno and NodeJS app for better Github notifications",
   "main": "src/index.js",
   "scripts": {
     "build": "webpack --progress --colors",
@@ -10,7 +10,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/trueadm/inferno-boilerplate.git"
+    "url": "git+https://github.com/crispioso/github-notifications.git"
   },
   "keywords": [
     "inferno",
@@ -18,12 +18,12 @@
     "cerebral",
     "jsx"
   ],
-  "author": "Dominic Gannaway",
+  "author": "Crispin Merriman",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/trueadm/inferno-boilerplate/issues"
+    "url": "https://github.com/crispioso/github-notifications"
   },
-  "homepage": "https://github.com/trueadm/inferno-boilerplate#readme",
+  "homepage": "https://github.com/crispioso/github-notifications#readme",
   "devDependencies": {
     "assert": "^1.4.1",
     "babel-cli": "^6.18.0",
