@@ -1,5 +1,6 @@
-import { h, Component } from 'preact';
-import { connect } from 'preact-redux';
+import Inferno from 'inferno';
+import Component from 'inferno-component'
+import { connect } from 'inferno-redux';
 
 class UnreadCount extends Component {
     constructor(props) {
@@ -10,17 +11,12 @@ class UnreadCount extends Component {
         };
     }
 
-    shouldComponentUpdate(nextProps) {
+    componentWillReceiveProps(nextProps) {
         this.setState({unreadCount: nextProps.unreadCount})
     }
 
-    componentDidUpdate() {
-        const element = document.getElementById('unread-count');
-        element.setAttribute('data-badge', this.state.unreadCount);
-    }
-
     render() {
-        return <div id="unread-count" className="material-icons mdl-badge mdl-badge--overlap">mail_outline</div>
+        return <div id="unread-count" data-badge={this.state.unreadCount} className="material-icons mdl-badge mdl-badge--overlap">mail_outline</div>
     }
 }
 

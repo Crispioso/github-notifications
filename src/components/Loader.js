@@ -1,4 +1,5 @@
-import { h, Component } from 'preact';
+import Inferno from 'inferno';
+import Component from 'inferno-component'
 
 class Loader extends Component {
     render() {

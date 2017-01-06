@@ -1,6 +1,7 @@
 import express from 'express'
 import path from 'path';
 import fetch from 'node-fetch';
+import models from './src/models/models';
 const app = express();
 const config = {
     port: process.env.PORT || 3000,
@@ -67,27 +68,10 @@ function getNotifications() {
             createIndexes(db);
 
             const responseLength = response.length;
-            const dataModel = {
-                _id: 0,
-                github_id: 0,
-                repo_id: 0,
-                repo_full_name: '',
-                repo_url: '',
-                title: '',
-                url: '',
-                type: '',
-                unread: true,
-                favourite: false,
-                done: false,
-                archived: false,
-                reason: '',
-                updated_at: '',
-                last_read_at: ''
-            };
             let i = 0;
 
             for (i; i < responseLength; i++) {
-                let thisObj = Object.assign({}, dataModel);
+                let thisObj = Object.assign({}, models.notification);
                 thisObj._id = response[i].id;
                 thisObj.github_id = response[i].id;
                 thisObj.repo_id = response[i].repository.id;
@@ -157,8 +141,8 @@ function addNotificationsMetadata(notifications) {
 function buildDBQuery(parameters) {
     const parametersArray = Object.keys(parameters);
     const parameterToDBProperty = {
-        repoID: "repo_id",
-        type: "type"
+        "repo-id": "repo_id",
+        "type": "type"
     };
     let DBQuery = {};
 
@@ -170,7 +154,7 @@ function buildDBQuery(parameters) {
         DBQuery[parameterToDBProperty[property]] = parameters[property];
 
         // Do any type changing (eg string to int)
-        if (property === "repoID") {
+        if (property === "repo-id") {
             DBQuery[parameterToDBProperty[property]] = parseInt(DBQuery[parameterToDBProperty[property]]);
         }
     });

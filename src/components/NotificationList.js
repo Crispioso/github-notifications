@@ -1,5 +1,7 @@
-import { h, Component } from 'preact';
-import NotificationItem from './NotificationItem.jsx';
+import Inferno from 'inferno';
+import Component from 'inferno-component'
+import NotificationItem from './NotificationItem';
+
 
 class NotificationList extends Component {
     constructor(props) {
@@ -27,3 +29,4 @@ class NotificationList extends Component {
 }
 
 export default NotificationList;
+

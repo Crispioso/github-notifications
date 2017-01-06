@@ -1,5 +1,6 @@
-import store from '../store';
-import { updateFetchedBool, addNotifications, updateUnreadCount } from '../actions';
+import store from '../shared/store';
+import { updateFetchedBool, addNotifications, updateUnreadCount } from '../shared/actions';
+import models from '../models/models';
 
 /**
  * Fetches notifications data from the server
@@ -7,14 +8,13 @@ import { updateFetchedBool, addNotifications, updateUnreadCount } from '../actio
  */
 
 function fetchNotifications(parameters) {
-    const validParameters = ['repoID', 'type'];
     let validatedParameters;
-
+    
     if (parameters) {
         validatedParameters = [];
         Object.keys(parameters).forEach(property => {
-            if (validParameters.indexOf(property) < 0) {
-                console.warn('%s is a invalid parameter so has been excluded from the request', property);
+            if (models.parameters[property] === undefined) {
+                console.warn('%s is an invalid parameter so has been excluded from the request', property);
                 return;
             }
             validatedParameters.push(property + "=" + parameters[property]);

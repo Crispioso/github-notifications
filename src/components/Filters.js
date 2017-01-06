@@ -1,4 +1,5 @@
-import { h, Component } from 'preact';
+import Inferno from 'inferno';
+import Component from 'inferno-component'
 import fetchNotifications from '../utilities/fetchNotifications';
 
 class Filters extends Component {
@@ -14,13 +15,20 @@ class Filters extends Component {
 
     handleNavClick(event) {
         event.preventDefault();
-        console.log();
 
-        const linkId = event.target.getAttribute('id');
-        const parameters = {};
+        const attributes = event.target.attributes;
+        const linkId = attributes.id;
+        let parameters = {};
 
-        parameters.repoID = event.target.getAttribute('data-repoID');
-        parameters.type = event.target.getAttribute('data-type');
+        Array.prototype.slice.call(attributes).forEach(attribute => {
+            const isParameterAttribute = attribute.name.substring(0, 10) === "data-param";
+            if (!isParameterAttribute) {
+                return;
+            }
+
+            const parameterTitle = attribute.name.substring(11, (attribute.name.length));
+            parameters[parameterTitle] = attribute.value;
+        });
 
         fetchNotifications(parameters);
         this.setState({activeLink: linkId})
@@ -32,7 +40,7 @@ class Filters extends Component {
                 <span className="mdl-layout-title">Filters</span>
                 <nav className="mdl-navigation">
                     <a id="all" className="mdl-navigation__link" href="" onClick={this.handleNavClick}>All</a>
-                    <a id="cdn-pull-requests" className="mdl-navigation__link" data-repoID="71245455" data-type="PullRequest" href="" onClick={this.handleNavClick}>CDN pull requests</a>
+                    <a id="cdn-pull-requests" className="mdl-navigation__link" data-param-repo-id="71245455" data-param-type="PullRequest" href="" onClick={this.handleNavClick}>CDN pull requests</a>
                 </nav>
                 <button className="mdl-button mdl-js-button mdl-button--fab mdl-button--mini-fab">
                     <i className="material-icons">add</i>

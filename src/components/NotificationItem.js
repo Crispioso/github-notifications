@@ -1,5 +1,6 @@
-import { h, Component } from 'preact';
-import { connect } from 'preact-redux';
+import Inferno from 'inferno';
+import Component from 'inferno-component';
+import { connect } from 'inferno-redux';
 
 class NotificationItem extends Component {
     constructor(props) {

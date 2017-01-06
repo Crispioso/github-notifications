@@ -1,5 +1,6 @@
-import {h, Component} from 'preact';
-import UnreadCount from './UnreadCount.jsx';
+import Inferno from 'inferno';
+import Component from 'inferno-component'
+import UnreadCount from './UnreadCount';
 
 class Header extends Component {
     render() {
