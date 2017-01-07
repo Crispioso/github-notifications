@@ -82,6 +82,28 @@
         }
     }
 
+    &__input {
+        position: absolute;
+        left: -9999px;
+    }
+
+    &__icon {
+        margin-right: 16px;
+        margin-left: 16px;
+
+        &--done.checked {
+            color: #4CAF50;
+        }
+
+        &--favourite.checked {
+            color: #FFC107;
+        }
+
+        &:hover {
+            cursor: pointer;
+        }
+    }
+
     &__item {
         //margin-left: 16px;
     }

@@ -48,14 +48,23 @@ class NotificationItem extends Component {
                     <div className="notifications__item">{this.props.repoName}</div>
                 </div>
                 <div className="mdl-card__actions">
-                    <label className="mdl-icon-toggle mdl-js-icon-toggle mdl-js-ripple-effect" htmlFor={"icon-toggle-done-" + this.props.id}>
-                        <input data-action="done" data-id={this.props.id} type="checkbox" id={"icon-toggle-done-" + this.props.id} className="mdl-icon-toggle__input" onChange={this.handleChange} checked={this.state.done} />
-                        <i className="mdl-icon-toggle__label material-icons filters__icon">done</i>
+                    <label htmlFor={"icon-toggle-done-" + this.props.id}>
+                        <input data-action="done" data-id={this.props.id} type="checkbox" name={"icon-toggle-done-" + this.props.id} id={"icon-toggle-done-" + this.props.id} className="mdl-icon-toggle__input notifications__input" onChange={this.handleChange} checked={this.state.done} />
+                        <i className={"material-icons notifications__icon notifications__icon--done" + (this.state.done ? " checked" : "")}>done</i>
                     </label>
-                    <label className="mdl-icon-toggle mdl-js-icon-toggle mdl-js-ripple-effect" htmlFor={"icon-toggle-favorite-" + this.props.id}>
-                        <input data-action="favourite" data-id={this.props.id} type="checkbox" id={"icon-toggle-favorite-" + this.props.id} className="mdl-icon-toggle__input" onChange={this.handleChange} checked={this.state.favourite} />
-                        <i className="mdl-icon-toggle__label material-icons filters__icon">favorite</i>
+
+                    <label htmlFor={"icon-toggle-favourite-" + this.props.id}>
+                        <input data-action="favourite" data-id={this.props.id} type="checkbox" name={"icon-toggle-favourite-" + this.props.id} id={"icon-toggle-favourite-" + this.props.id} className="mdl-icon-toggle__input notifications__input" onChange={this.handleChange} checked={this.state.favourite} />
+                        <i className={"material-icons notifications__icon notifications__icon--favourite" + (this.state.favourite ? " checked" : "")}>star</i>
                     </label>
+                    {/*<label className="mdl-icon-toggle mdl-js-icon-toggle mdl-js-ripple-effect" htmlFor={"icon-toggle-done-" + this.props.id}>*/}
+                        {/*<input data-action="done" data-id={this.props.id} type="checkbox" id={"icon-toggle-done-" + this.props.id} className="mdl-icon-toggle__input" onChange={this.handleChange} checked={this.state.done} />*/}
+                        {/*<i className="mdl-icon-toggle__label material-icons filters__icon">done</i>*/}
+                    {/*</label>*/}
+                    {/*<label className="mdl-icon-toggle mdl-js-icon-toggle mdl-js-ripple-effect" htmlFor={"icon-toggle-favorite-" + this.props.id}>*/}
+                        {/*<input data-action="favourite" data-id={this.props.id} type="checkbox" id={"icon-toggle-favorite-" + this.props.id} className="mdl-icon-toggle__input" onChange={this.handleChange} checked={this.state.favourite} />*/}
+                        {/*<i className="mdl-icon-toggle__label material-icons filters__icon">favorite</i>*/}
+                    {/*</label>*/}
                 </div>
             </div>
         )
