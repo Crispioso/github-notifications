@@ -12,8 +12,9 @@ import createBrowserHistory from 'history/createBrowserHistory';
 import { Provider } from 'inferno-redux';
 import store from './shared/store';
 
-// fetch notifications module
+// utility modules
 import fetchNotifications from './utilities/fetchNotifications';
+import './shared/material-ui';
 
 // app components
 import MyApp from './App';
