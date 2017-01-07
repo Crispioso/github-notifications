@@ -25,18 +25,6 @@ class NotificationItem extends Component {
         return weekdays[dateString.getDay()] + " " + dateString.getDate() + " " + months[dateString.getMonth()] + " " + dateString.getFullYear() + " [" + dateString.getHours() + ":" + (dateString.getMinutes().toString().length === 1 ? ("0" + dateString.getMinutes()) : dateString.getMinutes()) + "]";
     }
 
-    // handleDoneChange(event) {
-    //     const checked = !event.target.checked;
-    //     this.setState({done: checked});
-    //     this.props.onChange(event);
-    // }
-    //
-    // handleFavouriteChange(event) {
-    //     const checked = !event.target.checked;
-    //     this.setState({favourite: checked});
-    //     this.props.onChange(event);
-    // }
-
     handleChange(event) {
         const action = event.target.dataset.action;
         const checked = !event.target.checked;
