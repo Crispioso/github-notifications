@@ -2,6 +2,7 @@ import express from 'express'
 import path from 'path';
 import fetch from 'node-fetch';
 import models from './src/models/models';
+import parseBool from './src/utilities/parseBool';
 const app = express();
 const config = {
     port: process.env.PORT || 3000,
@@ -50,7 +51,7 @@ const createIndexes = function(db) {
         if (error) {
             console.log("Error whilst creating index: %s", error);
         }
-    })
+    });
 };
 
 
@@ -142,7 +143,8 @@ function buildDBQuery(parameters) {
     const parametersArray = Object.keys(parameters);
     const parameterToDBProperty = {
         "repo-id": "repo_id",
-        "type": "type"
+        "type": "type",
+        "favourite": "favourite"
     };
     let DBQuery = {};
 
@@ -156,6 +158,9 @@ function buildDBQuery(parameters) {
         // Do any type changing (eg string to int)
         if (property === "repo-id") {
             DBQuery[parameterToDBProperty[property]] = parseInt(DBQuery[parameterToDBProperty[property]]);
+        }
+        if (property === "favourite" || property === "unread" || property === "done") {
+            DBQuery[parameterToDBProperty[property]] = parseBool(DBQuery[parameterToDBProperty[property]]);
         }
     });
 

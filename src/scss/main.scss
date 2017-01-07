@@ -1,20 +1,108 @@
 .main {
-    padding-top: 16px;
+    padding: 16px;
 }
 
 .header {
-    background: white;
-    color: #757575;
+    //background: white;
+    //color: #757575;
+}
+
+/* Material design lite over-rides */
+.mdl {
+    &-navigation {
+        padding-top: 0 !important;
+    }
+
+    &-card {
+        box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+
+        &__title {
+            padding-top: 0;
+        }
+
+        &__type {
+            color: rgba(0,0,0,.54);
+            font-size: 1rem;
+            line-height: 18px;
+            overflow: hidden;
+            padding: 16px 16px 8px 16px;
+            width: 90%;
+        }
+
+        &__actions {
+            position: relative;
+            padding: 8px 0;
+            margin: 0 16px;
+            width: auto;
+
+            &:before {
+                content: "";
+                width: 100%;
+                left: 0;
+                top: 0;
+                position: absolute;
+                border-top: 1px solid #ECECEC;
+            }
+        }
+    }
 }
 
 .mdl-layout__drawer-button {
-    color: #757575 !important;
+    //color: #757575 !important;
 }
 
 .title {
     font-size: 22px;
 }
 
-.notification {
-    padding: 16px 40px;
+.drawer {
+    &__subheading {
+        font-size: 17px;
+        margin-bottom: 8px;
+        margin-left: 16px;
+    }
+}
+
+.notifications {
+    max-width: 960px;
+    margin-left: auto;
+    margin-right: auto;
+
+
+    &__row {
+        //override some of MDLs styling on cards
+        min-height: 144px;
+        width: auto;
+
+        margin-bottom: 16px;
+
+        &:hover,
+        &:focus {
+
+        }
+    }
+
+    &__item {
+        //margin-left: 16px;
+    }
+
+    &__action {
+        margin-left: 8px;
+        margin-right: 8px;
+
+        &:hover {
+            cursor: pointer;
+        }
+    }
+}
+
+.filters{
+
+    &__link.active {
+        color: black !important;
+    }
+
+    &__icon {
+        margin-right: 24px;
+    }
 }

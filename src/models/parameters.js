@@ -4,7 +4,13 @@
 
 const parameters = {
     "repo-id": 0,
-    "type": ''
+    "type": '',
+    "reason": '',
+    "updated-at": '2017-01-04T18:01:59Z',
+    "done": false,
+    "favourite": false,
+    "archived": false,
+    "unread": false
 };
 
 export default parameters

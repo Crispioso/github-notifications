@@ -3,6 +3,8 @@ import { createStore } from 'redux';
 const initialState = {
     checked: true,
     dataFetched: false,
+    filter: 'all',
+    parameters: {},
     unreadCount: 0,
     notifications: []
 };
@@ -14,7 +16,7 @@ function reducer(state = initialState, action) {
                 dataFetched: action.dataFetched
             })
         }
-        case ('ADD_NOTIFICATIONS'): {
+        case ('UPDATE_NOTIFICATIONS'): {
             return Object.assign({}, state, {
                 notifications: action.notifications
             })
@@ -33,6 +35,16 @@ function reducer(state = initialState, action) {
             return Object.assign({}, state, {
                 notifications: action.notifications
             });
+        }
+        case ('UPDATE_FILTER'): {
+            return Object.assign({}, state, {
+                filter: action.filter
+            })
+        }
+        case ('UPDATE_PARAMETERS'): {
+            return Object.assign({}, state, {
+                parameters: action.parameters
+            })
         }
         default: {
             console.log("Action type '%s' unrecognised", action.type);

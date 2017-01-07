@@ -17,8 +17,7 @@ import fetchNotifications from './utilities/fetchNotifications';
 import './shared/material-ui';
 
 // app components
-import NotificationsList from './components/NotificationList';
-import App from './components/App';
+import App from './components/App.jsx';
 
 if (module.hot) {
     require('inferno-devtools');

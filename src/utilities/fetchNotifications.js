@@ -1,5 +1,5 @@
 import store from '../shared/store';
-import { updateFetchedBool, addNotifications, updateUnreadCount } from '../shared/actions';
+import { updateFetchedBool, updateNotifications, updateUnreadCount } from '../shared/actions';
 import models from '../models/models';
 
 /**
@@ -23,7 +23,7 @@ function fetchNotifications(parameters) {
     }
 
     fetch('/notificationsData' + (validatedParameters || "")).then(response=> response.json()).then(response => {
-        store.dispatch(addNotifications(response.notifications));
+        store.dispatch(updateNotifications(response.notifications));
         store.dispatch(updateFetchedBool(true));
         store.dispatch(updateUnreadCount(response.metadata.unreadCount));
     });

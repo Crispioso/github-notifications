@@ -1,23 +1,33 @@
 import Inferno from 'inferno';
 import Component from 'inferno-component'
+import { connect } from 'inferno-redux'
 import fetchNotifications from '../utilities/fetchNotifications';
+import { updateFilter, updateParameters } from '../shared/actions';
+import FilterLink from './FilterLink.jsx';
 
 class Filters extends Component {
     constructor(props) {
         super(props);
 
         this.state = {
-            activeLink: "all"
+            filter: this.props.filter
         };
 
         this.handleNavClick = this.handleNavClick.bind(this);
     }
 
+    componentWillReceiveProps(nextProps) {
+        fetchNotifications(nextProps.parameters);
+    }
+
     handleNavClick(event) {
         event.preventDefault();
 
+        const filter = event.target.dataset.filter;
+        const dispatch = this.props.dispatch;
         const attributes = event.target.attributes;
-        const linkId = attributes.id;
+
+        // Build up parameters
         let parameters = {};
 
         Array.prototype.slice.call(attributes).forEach(attribute => {
@@ -30,17 +40,23 @@ class Filters extends Component {
             parameters[parameterTitle] = attribute.value;
         });
 
-        fetchNotifications(parameters);
-        this.setState({activeLink: linkId})
+        dispatch(updateParameters(parameters));
+        dispatch(updateFilter(filter));
     }
 
     render() {
         return (
-            <div className="mdl-layout__drawer">
-                <span className="mdl-layout-title">Filters</span>
+            <div className="mdl-layout__drawer filters">
+                <h2 className="mdl-layout-title">Filters</h2>
                 <nav className="mdl-navigation">
-                    <a id="all" className="mdl-navigation__link" href="" onClick={this.handleNavClick}>All</a>
-                    <a id="cdn-pull-requests" className="mdl-navigation__link" data-param-repo-id="71245455" data-param-type="PullRequest" href="" onClick={this.handleNavClick}>CDN pull requests</a>
+                    <FilterLink name="all" text="All" icon="home" onClick={this.handleNavClick} active={this.props.filter === "all"}/>
+                    <FilterLink name="favourites" text="Favourites" icon="favorite" onClick={this.handleNavClick} active={this.props.filter === "favourites"}/>
+                    <FilterLink name="done" text="Done" icon="done" onClick={this.handleNavClick} active={this.props.filter === "done"}/>
+                    <FilterLink name="read" text="Read" icon="drafts" onClick={this.handleNavClick} active={this.props.filter === "read"}/>
+                </nav>
+                <h3 className="drawer__subheading">Custom</h3>
+                <nav className="mdl-navigation">
+                    <a data-filter="custom-1" id="cdn-pull-requests" className="mdl-navigation__link" data-param-repo-id="71245455" data-param-type="PullRequest" href="" onClick={this.handleNavClick}>CDN pull requests</a>
                 </nav>
                 <button className="mdl-button mdl-js-button mdl-button--fab mdl-button--mini-fab">
                     <i className="material-icons">add</i>
@@ -50,4 +66,11 @@ class Filters extends Component {
     }
 }
 
-export default Filters
+function mapStateToProps(state) {
+    return {
+        filter: state.filter,
+        parameters: state.parameters
+    }
+}
+
+export default connect(mapStateToProps)(Filters)

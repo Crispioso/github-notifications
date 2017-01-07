@@ -1,7 +1,7 @@
 import Inferno from 'inferno';
 import Component from 'inferno-component';
-import NotificationList from './NotificationList';
 import { connect } from 'inferno-redux';
+import NotificationList from './NotificationList.jsx';
 import Loader from './Loader.jsx';
 import Filters from './Filters.jsx'
 import Header from './Header.jsx';
