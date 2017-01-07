@@ -1,6 +1,6 @@
 import Inferno from 'inferno';
 import Component from 'inferno-component'
-import UnreadCount from './UnreadCount';
+import UnreadCount from './UnreadCount.jsx';
 
 class Header extends Component {
     render() {

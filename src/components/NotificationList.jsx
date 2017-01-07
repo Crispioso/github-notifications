@@ -1,6 +1,6 @@
 import Inferno from 'inferno';
 import Component from 'inferno-component'
-import NotificationItem from './NotificationItem';
+import NotificationItem from './NotificationItem.jsx';
 
 
 class NotificationList extends Component {

@@ -2,9 +2,9 @@ import Inferno from 'inferno';
 import Component from 'inferno-component';
 import NotificationList from './NotificationList';
 import { connect } from 'inferno-redux';
-import Loader from './Loader';
-import Filters from './Filters'
-import Header from './Header';
+import Loader from './Loader.jsx';
+import Filters from './Filters.jsx'
+import Header from './Header.jsx';
 
 class App extends Component {
     constructor(props){

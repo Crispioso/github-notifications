@@ -17,8 +17,6 @@ import fetchNotifications from './utilities/fetchNotifications';
 import './shared/material-ui';
 
 // app components
-import MyApp from './App';
-import VersionComponent from './VersionComponent';
 import NotificationsList from './components/NotificationList';
 import App from './components/App';
 
