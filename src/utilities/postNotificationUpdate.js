@@ -6,7 +6,7 @@
  * @param callback - Returns response on successful POST
  */
 
-function updateNotification(notificationId, field, value, callback) {
+function postNotificationUpdate(notificationId, field, value, callback) {
     const body = {
         field: field,
         value: value
@@ -22,10 +22,7 @@ function updateNotification(notificationId, field, value, callback) {
 
     fetch(url, options).then(response => response.json()).then(response => {
         callback(response);
-    }).catch(function(error) {
-        console.log("Error posting notification update:");
-        console.log(error);
-    });
+    })
 }
 
-export default updateNotification;
+export default postNotificationUpdate;

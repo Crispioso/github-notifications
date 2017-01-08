@@ -2,7 +2,7 @@ import Inferno from 'inferno';
 import Component from 'inferno-component';
 import { connect } from 'inferno-redux';
 import { updateNotifications } from '../shared/actions';
-import updateNotification from '../utilities/updateNotification';
+import postNotificationUpdate from '../utilities/postNotificationUpdate';
 import NotificationItem from './NotificationItem.jsx';
 
 
@@ -24,12 +24,13 @@ class NotificationList extends Component {
         const notificationIndex = this.state.notifications.findIndex(notification => {
             return notification._id === id;
         });
+        const dispatch = this.props.dispatch;
+        const notifications = this.state.notifications;
 
         this.state.notifications[notificationIndex][action] = checked;
 
-        updateNotification(id, action, checked, function(response) {
-            console.log(response);
-            // this.props.dispatch(updateNotifications(this.state.notifications));
+        postNotificationUpdate(id, action, checked, function(response) {
+            dispatch(updateNotifications(notifications));
         });
     }
 

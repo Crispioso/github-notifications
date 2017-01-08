@@ -1,7 +1,7 @@
 /** Actions to update state */
 
 export const TOGGLE_READ = 'TOGGLE_READ';
-export const ADD_NOTIFICATIONS = 'UPDATE_NOTIFICATIONS';
+export const UPDATE_NOTIFICATIONS = 'UPDATE_NOTIFICATIONS';
 export const TOGGLE_CHECKED = 'TOGGLE_CHECKED';
 export const UPDATE_FETCHED_BOOL = 'UPDATE_FETCHED_BOOL';
 export const UPDATE_UNREAD_COUNT = 'UPDATE_UNREAD_COUNT';
@@ -39,7 +39,7 @@ export function updateFetchedBool(boolean) {
 
 export function updateNotifications(notifications) {
     return {
-        type: ADD_NOTIFICATIONS,
+        type: UPDATE_NOTIFICATIONS,
         notifications: notifications
     }
 }
