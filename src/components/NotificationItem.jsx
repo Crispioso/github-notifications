@@ -46,20 +46,9 @@ class NotificationItem extends Component {
 
     componentDidUpdate() {
         // debugger;
-        console.log("Done update \n", {
-            id: this.props.id,
-            favourite: this.state.favourite,
-            done: this.state.done
-        });
     }
 
     render() {
-        // debugger;
-        console.log("Rendering \n", {
-            id: this.props.id,
-            favourite: this.state.favourite,
-            done: this.state.done
-        });
         return (
             <div className="mdl-card demo-card-wide notifications__row">
                 <div className="mdl-card__type">

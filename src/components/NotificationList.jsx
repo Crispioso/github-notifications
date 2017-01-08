@@ -35,7 +35,7 @@ class NotificationList extends Component {
     }
 
     render() {
-        const notifications = this.props.notifications;
+        const notifications = this.state.notifications;
 
         return (
             <div className="notifications">

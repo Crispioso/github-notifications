@@ -22,6 +22,8 @@ function fetchNotifications(parameters) {
         validatedParameters = "?" + validatedParameters.join('&');
     }
 
+    store.dispatch(updateFetchedBool(false));
+
     fetch('/notificationsData' + (validatedParameters || "")).then(response=> response.json()).then(response => {
         store.dispatch(updateNotifications(response.notifications));
         store.dispatch(updateFetchedBool(true));

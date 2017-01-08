@@ -21,7 +21,7 @@ class App extends Component {
         this.setState({
             dataFetched: nextProps.dataFetched,
             notifications: nextProps.notifications
-        })
+        });
     }
 
     render() {
