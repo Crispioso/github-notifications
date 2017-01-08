@@ -20,9 +20,10 @@ import MongoClient from 'mongodb';
 import assert from 'assert';
 const database = 'mongodb://localhost:27017/github-notifications';
 
-const updateOne = function(db, id, notification, callback) {
+const updateOne = function(db, notification, callback) {
     const collection = db.collection('notifications');
 
+    delete notification['lastModified'];
     collection.updateOne({_id: notification._id}, {$set: notification, $currentDate: {lastModified: true}}, { upsert:true }, function(err, updatedItems) {
         assert.equal(null, err);
         callback(updatedItems);
@@ -62,7 +63,7 @@ function getNotifications() {
             console.log("Expected 200 response from Github API, instead got '%s %s'", response.status, response.statusText);
             throw('');
         }
-        console.log(response.headers.raw());
+        // console.log(response.headers.raw());
         return response.json();
     }).then(response => {
         MongoClient.connect(database, function(err, db) {
@@ -73,7 +74,7 @@ function getNotifications() {
             async.each(response, function(notification, callback) {
                 const id = notification.id + "-" + notification.repository.owner.login;
                 findDocuments(db, {_id: id}, function(dbData) {
-                    const notificationData = dbData.length ? dbData : models.notification;
+                    const notificationData = dbData.length ? dbData[0] : models.notification;
                     const thisObj = Object.assign({}, notificationData, {
                         _id: notification.id + "-" + notification.repository.owner.login,
                         github_id: notification.id,
@@ -89,7 +90,7 @@ function getNotifications() {
                         updated_at: notification.updated_at,
                         last_read_at: notification.last_read_at
                     });
-                    updateOne(db, notification.id, thisObj, function() {});
+                    updateOne(db, thisObj, function() {});
                     callback();
                 });
             }, function(err) {
