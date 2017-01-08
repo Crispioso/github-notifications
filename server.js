@@ -175,7 +175,8 @@ function buildDBQuery(parameters) {
     const parameterToDBProperty = {
         "repo-id": "repo_id",
         "type": "type",
-        "favourite": "favourite"
+        "favourite": "favourite",
+        "done": "done"
     };
     let DBQuery = {};
 

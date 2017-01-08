@@ -29,7 +29,7 @@ class NotificationList extends Component {
 
         this.state.notifications[notificationIndex][action] = checked;
 
-        postNotificationUpdate(id, action, checked, function(response) {
+        postNotificationUpdate(id, action, checked, function() {
             dispatch(updateNotifications(notifications));
         });
     }

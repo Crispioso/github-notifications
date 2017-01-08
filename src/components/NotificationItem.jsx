@@ -31,17 +31,35 @@ class NotificationItem extends Component {
         this.props.onChange(event)
     }
 
-    componentWillReceiveProps(nextProps) {
-        this.setState({done: nextProps.done});
-        this.setState({favourite: nextProps.favourite});
+    componentWillReceiveProps(nextProps, nextState) {
+        this.state.done = nextProps.done;
+        this.state.favourite = nextProps.favourite;
     }
 
-    shouldComponentUpdate() {
-        const state = this.state;
-        //
+    shouldComponentUpdate(nextProps, nextState, extra) {
+        // debugger;
+    }
+
+    componentWillUpdate(nextProps, nextState) {
+        // debugger;
+    }
+
+    componentDidUpdate() {
+        // debugger;
+        console.log("Done update \n", {
+            id: this.props.id,
+            favourite: this.state.favourite,
+            done: this.state.done
+        });
     }
 
     render() {
+        // debugger;
+        console.log("Rendering \n", {
+            id: this.props.id,
+            favourite: this.state.favourite,
+            done: this.state.done
+        });
         return (
             <div className="mdl-card demo-card-wide notifications__row">
                 <div className="mdl-card__type">
