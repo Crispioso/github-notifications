@@ -1,6 +1,8 @@
 #github-notifications
 
-A very small proof of concept and testing a few technologies (ie MongoDB and Preact).
+An attempt to make Github notifications more manageable with custom filters, 'done' and 'favourite' markers, and stopping them from disappearing as soon as they're marked as 'read' (like Github currently does).
+
+This idea was totally stolen from 
 
 ##Installation
 
@@ -28,4 +30,5 @@ Planned bug fixes, features or ideas (in no particular order):
 - Pagination on lists of notifications.
 - Show all notifications (not just unread).
 - Tell Github a notification is read when it's been set to 'done'.
+- Hide 'done' from all list and make 'all' some accurate, such as 'to do' or 'inbox'.
 
