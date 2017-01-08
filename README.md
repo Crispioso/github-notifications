@@ -2,7 +2,7 @@
 
 An attempt to make Github notifications more manageable with custom filters, 'done' and 'favourite' markers, and stopping them from disappearing as soon as they're marked as 'read' (like Github currently does).
 
-This idea was totally stolen from 
+This idea was totally stolen from [Octobox](https://github.com/octobox/octobox).
 
 ##Installation
 
