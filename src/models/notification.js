@@ -3,6 +3,7 @@ const notification = {
     _id: '0',
     github_id: '0',
     repo_id: 0,
+    repo_owner: '',
     repo_full_name: '',
     repo_url: '',
     title: '',

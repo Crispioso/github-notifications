@@ -1,6 +1,7 @@
 import express from 'express'
 import path from 'path';
 import fetch from 'node-fetch';
+import async from 'async';
 import models from './src/models/models';
 import parseBool from './src/utilities/parseBool';
 const app = express();
@@ -32,7 +33,7 @@ const findDocuments = function(db, query, callback) {
     // Get the documents collection
     const collection = db.collection('notifications');
     // Find some documents
-    collection.find(query).toArray(function(err, docs) {
+    collection.find(query).sort({'updated_at': -1}).toArray(function(err, docs) {
         assert.equal(err, null);
         callback(docs);
     });
@@ -54,7 +55,6 @@ const createIndexes = function(db) {
     });
 };
 
-
 function getNotifications() {
     fetch('https://api.github.com/notifications?all=true&access_token=' + config.auth_token).then(response => {
         if (response.status !== 200) {
@@ -68,26 +68,37 @@ function getNotifications() {
 
             createIndexes(db);
 
-            const responseLength = response.length;
-            let i = 0;
+            async.each(function(id){
+                let notificationData = models.notification;
+                findDocuments(db, {_id: id}, function(notification) {
+                    if (notification.length) {
+                        notificationData = notification;
+                    }
+                });
+            }, function(notificationData) {
+                const thisObj = Object.assign({}, notificationData, {
+                    _id: response[i].id + "-" + response[i].repository.owner.login,
+                    github_id: response[i].id,
+                    repo_id: response[i].repository.id,
+                    repo_owner: response[i].repository.owner.login,
+                    repo_full_name: response[i].repository.full_name,
+                    repo_url: response[i].repository.html_url,
+                    title: response[i].subject.title,
+                    url: response[i].subject.url,
+                    type: response[i].subject.type,
+                    unread: response[i].unread,
+                    reason: response[i].reason,
+                    updated_at: response[i].updated_at,
+                    last_read_at: response[i].last_read_at
+                });
 
-            for (i; i < responseLength; i++) {
-                let thisObj = Object.assign({}, models.notification);
-                thisObj._id = response[i].id;
-                thisObj.github_id = response[i].id;
-                thisObj.repo_id = response[i].repository.id;
-                thisObj.repo_full_name = response[i].repository.full_name;
-                thisObj.repo_url = response[i].repository.html_url;
-                thisObj.title = response[i].subject.title;
-                thisObj.url = response[i].subject.url;
-                thisObj.type = response[i].subject.type;
-                thisObj.unread = response[i].unread;
-                thisObj.reason = response[i].reason;
-                thisObj.updated_at = response[i].updated_at;
-                thisObj.last_read_at = response[i].last_read_at;
+                if (response[i].id + "-" + response[i].repository.owner.login === "192227018-255kb") {
+                    console.log("Output data");
+                    console.log(JSON.stringify(thisObj));
+                }
 
                 updateOne(db, response[i].id, thisObj, function() {});
-            }
+            });
 
             db.close();
         });

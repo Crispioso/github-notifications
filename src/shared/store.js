@@ -4,6 +4,7 @@ const initialState = {
     checked: true,
     dataFetched: false,
     filter: 'all',
+    customFilters: [],
     parameters: {},
     unreadCount: 0,
     notifications: []

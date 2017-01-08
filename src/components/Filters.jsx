@@ -4,6 +4,7 @@ import { connect } from 'inferno-redux'
 import fetchNotifications from '../utilities/fetchNotifications';
 import { updateFilter, updateParameters } from '../shared/actions';
 import FilterLink from './FilterLink.jsx';
+import CustomFilters from './CustomFilters.jsx';
 
 class Filters extends Component {
     constructor(props) {
@@ -54,10 +55,7 @@ class Filters extends Component {
                     <FilterLink parameters={{done: true}} name="done" text="Done" icon="done" onClick={this.handleNavClick} active={this.props.filter === "done"}/>
                     <FilterLink parameters={{unread: false}} name="read" text="Read" icon="drafts" onClick={this.handleNavClick} active={this.props.filter === "read"}/>
                 </nav>
-                <h3 className="drawer__subheading">Custom</h3>
-                <nav className="mdl-navigation">
-                    <a data-filter="custom-1" id="cdn-pull-requests" className="mdl-navigation__link" data-param-repo-id="71245455" data-param-type="PullRequest" href="" onClick={this.handleNavClick}>CDN pull requests</a>
-                </nav>
+                <CustomFilters onClick={this.handleNavClick}/>
                 <button className="mdl-button mdl-js-button mdl-button--fab mdl-button--mini-fab">
                     <i className="material-icons">add</i>
                 </button>

@@ -1,7 +1,6 @@
 import Inferno from 'inferno';
 import Component from 'inferno-component';
 import { connect } from 'inferno-redux';
-import { updateNotifications } from '../shared/actions';
 
 class NotificationItem extends Component {
     constructor(props) {
@@ -13,8 +12,6 @@ class NotificationItem extends Component {
         };
 
         this.handleChange = this.handleChange.bind(this);
-        // this.handleDoneChange = this.handleDoneChange.bind(this);
-        // this.handleFavouriteChange = this.handleFavouriteChange.bind(this);
     }
 
     convertUTCToString(date) {
@@ -57,26 +54,10 @@ class NotificationItem extends Component {
                         <input data-action="favourite" data-id={this.props.id} type="checkbox" name={"icon-toggle-favourite-" + this.props.id} id={"icon-toggle-favourite-" + this.props.id} className="mdl-icon-toggle__input notifications__input" onChange={this.handleChange} checked={this.state.favourite} />
                         <i className={"material-icons notifications__icon notifications__icon--favourite" + (this.state.favourite ? " checked" : "")}>star</i>
                     </label>
-                    {/*<label className="mdl-icon-toggle mdl-js-icon-toggle mdl-js-ripple-effect" htmlFor={"icon-toggle-done-" + this.props.id}>*/}
-                        {/*<input data-action="done" data-id={this.props.id} type="checkbox" id={"icon-toggle-done-" + this.props.id} className="mdl-icon-toggle__input" onChange={this.handleChange} checked={this.state.done} />*/}
-                        {/*<i className="mdl-icon-toggle__label material-icons filters__icon">done</i>*/}
-                    {/*</label>*/}
-                    {/*<label className="mdl-icon-toggle mdl-js-icon-toggle mdl-js-ripple-effect" htmlFor={"icon-toggle-favorite-" + this.props.id}>*/}
-                        {/*<input data-action="favourite" data-id={this.props.id} type="checkbox" id={"icon-toggle-favorite-" + this.props.id} className="mdl-icon-toggle__input" onChange={this.handleChange} checked={this.state.favourite} />*/}
-                        {/*<i className="mdl-icon-toggle__label material-icons filters__icon">favorite</i>*/}
-                    {/*</label>*/}
                 </div>
             </div>
         )
     }
 }
 
-// function mapStateToProps(state) {
-//     return {
-//         done: state.done,
-//         favourite: state.favourite
-//     }
-// }
-//
-// export default connect(mapStateToProps)(NotificationItem);
 export default NotificationItem
