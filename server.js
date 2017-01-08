@@ -2,6 +2,7 @@ import express from 'express'
 import path from 'path';
 import fetch from 'node-fetch';
 import async from 'async';
+import bodyParser from 'body-parser';
 import models from './src/models/models';
 import parseBool from './src/utilities/parseBool';
 const app = express();
@@ -22,7 +23,7 @@ const database = 'mongodb://localhost:27017/github-notifications';
 const updateOne = function(db, id, notification, callback) {
     const collection = db.collection('notifications');
 
-    collection.updateOne({github_id: notification.github_id}, {$set: notification, $currentDate: {lastModified: true}}, { upsert:true }, function(err, updatedItems) {
+    collection.updateOne({_id: notification._id}, {$set: notification, $currentDate: {lastModified: true}}, { upsert:true }, function(err, updatedItems) {
         assert.equal(null, err);
         callback(updatedItems);
     });
@@ -68,39 +69,35 @@ function getNotifications() {
 
             createIndexes(db);
 
-            async.each(function(id){
-                let notificationData = models.notification;
-                findDocuments(db, {_id: id}, function(notification) {
-                    if (notification.length) {
-                        notificationData = notification;
-                    }
+            async.each(response, function(notification, callback) {
+                const id = notification.id + "-" + notification.repository.owner.login;
+                findDocuments(db, {_id: id}, function(dbData) {
+                    const notificationData = dbData.length ? dbData : models.notification;
+                    const thisObj = Object.assign({}, notificationData, {
+                        _id: notification.id + "-" + notification.repository.owner.login,
+                        github_id: notification.id,
+                        repo_id: notification.repository.id,
+                        repo_owner: notification.repository.owner.login,
+                        repo_full_name: notification.repository.full_name,
+                        repo_url: notification.repository.html_url,
+                        title: notification.subject.title,
+                        url: notification.subject.url,
+                        type: notification.subject.type,
+                        unread: notification.unread,
+                        reason: notification.reason,
+                        updated_at: notification.updated_at,
+                        last_read_at: notification.last_read_at
+                    });
+                    updateOne(db, notification.id, thisObj, function() {});
+                    callback();
                 });
-            }, function(notificationData) {
-                const thisObj = Object.assign({}, notificationData, {
-                    _id: response[i].id + "-" + response[i].repository.owner.login,
-                    github_id: response[i].id,
-                    repo_id: response[i].repository.id,
-                    repo_owner: response[i].repository.owner.login,
-                    repo_full_name: response[i].repository.full_name,
-                    repo_url: response[i].repository.html_url,
-                    title: response[i].subject.title,
-                    url: response[i].subject.url,
-                    type: response[i].subject.type,
-                    unread: response[i].unread,
-                    reason: response[i].reason,
-                    updated_at: response[i].updated_at,
-                    last_read_at: response[i].last_read_at
-                });
-
-                if (response[i].id + "-" + response[i].repository.owner.login === "192227018-255kb") {
-                    console.log("Output data");
-                    console.log(JSON.stringify(thisObj));
+            }, function(err) {
+                if (err) {
+                    console.log("Error finding document");
+                } else {
+                    db.close();
                 }
-
-                updateOne(db, response[i].id, thisObj, function() {});
             });
-
-            db.close();
         });
     }).catch(error => {
         console.log("Error getting notifications data from Github API \n%s", error);
@@ -129,8 +126,31 @@ app.get('/notificationsData', function(req, res) {
     });
 });
 
+app.use( bodyParser.json() );
+app.use(bodyParser.urlencoded({
+    extended: true
+}));
+app.post('/updateNotification/:id', function(req, res) {
+    const id = req.params.id;
+    const field = req.body.field;
+    const value = req.body.value;
+    const newData = {};
+    newData[field] = value;
+
+    MongoClient.connect(database, function(err, db) {
+        assert.equal(null, err);
+        const collection = db.collection('notifications');
+        collection.updateOne({_id: id}, {$set: newData, $currentDate: {lastModified: true}}, { upsert:true }, function(err, updatedData) {
+            assert.equal(null, err);
+            res.setHeader('Content-Type', 'application/json');
+            newData['_id'] = id;
+            res.send(JSON.stringify(newData));
+        });
+    });
+});
+
 app.listen(config.port, function () {
-    console.log('Preact app started \nPORT: %s\nOAUTH_TOKEN: %s\n', config.port, config.auth_token);
+    console.log('Inferno app started \nPORT: %s\nOAUTH_TOKEN: %s\n', config.port, config.auth_token);
 });
 
 app.use(express.static('dist'));

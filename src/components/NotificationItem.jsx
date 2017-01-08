@@ -31,6 +31,16 @@ class NotificationItem extends Component {
         this.props.onChange(event)
     }
 
+    componentWillReceiveProps(nextProps) {
+        this.setState({done: nextProps.done});
+        this.setState({favourite: nextProps.favourite});
+    }
+
+    shouldComponentUpdate() {
+        const state = this.state;
+        //
+    }
+
     render() {
         return (
             <div className="mdl-card demo-card-wide notifications__row">

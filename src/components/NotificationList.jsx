@@ -2,6 +2,7 @@ import Inferno from 'inferno';
 import Component from 'inferno-component';
 import { connect } from 'inferno-redux';
 import { updateNotifications } from '../shared/actions';
+import updateNotification from '../utilities/updateNotification';
 import NotificationItem from './NotificationItem.jsx';
 
 
@@ -25,7 +26,11 @@ class NotificationList extends Component {
         });
 
         this.state.notifications[notificationIndex][action] = checked;
-        this.props.dispatch(updateNotifications(this.state.notifications));
+
+        updateNotification(id, action, checked, function(response) {
+            console.log(response);
+            // this.props.dispatch(updateNotifications(this.state.notifications));
+        });
     }
 
     render() {
