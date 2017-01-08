@@ -36,18 +36,6 @@ class NotificationItem extends Component {
         this.state.favourite = nextProps.favourite;
     }
 
-    shouldComponentUpdate(nextProps, nextState, extra) {
-        // debugger;
-    }
-
-    componentWillUpdate(nextProps, nextState) {
-        // debugger;
-    }
-
-    componentDidUpdate() {
-        // debugger;
-    }
-
     render() {
         return (
             <div className="mdl-card demo-card-wide notifications__row">
@@ -64,7 +52,10 @@ class NotificationItem extends Component {
                 <div className="mdl-card__actions">
                     <label htmlFor={"icon-toggle-done-" + this.props.id}>
                         <input data-action="done" data-id={this.props.id} type="checkbox" name={"icon-toggle-done-" + this.props.id} id={"icon-toggle-done-" + this.props.id} className="mdl-icon-toggle__input notifications__input" onChange={this.handleChange} checked={this.state.done} />
-                        <i className={"material-icons notifications__icon notifications__icon--done" + (this.state.done ? " checked" : "")}>done</i>
+                        <i className={"icon material-icons notifications__icon notifications__icon--done" + (this.state.done ? " checked" : "")}>done</i>
+                        <div className="mdl-tooltip" data-mdl-for={"icon-toggle-done-" + this.props.id}>
+                            Mark as done
+                        </div>
                     </label>
 
                     <label htmlFor={"icon-toggle-favourite-" + this.props.id}>
