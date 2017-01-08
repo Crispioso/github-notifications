@@ -10,6 +10,7 @@ import createBrowserHistory from 'history/createBrowserHistory';
 
 // state modules
 import { Provider } from 'inferno-redux';
+import { updateFilter } from './shared/actions';
 import store from './shared/store';
 
 // utility modules
@@ -23,6 +24,10 @@ if (module.hot) {
     require('inferno-devtools');
 }
 
+// Load default 'inbox' filter
+fetchNotifications({done: false});
+store.dispatch(updateFilter('inbox'));
+
 const browserHistory = createBrowserHistory();
 
 const routes = (
@@ -32,8 +37,6 @@ const routes = (
 		</Router>
 	</Provider>
 );
-
-fetchNotifications();
 
 Inferno.render(routes, document.getElementById('app'));
 

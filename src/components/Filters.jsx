@@ -50,7 +50,7 @@ class Filters extends Component {
             <div className="mdl-layout__drawer filters">
                 <h2 className="mdl-layout-title">Filters</h2>
                 <nav className="mdl-navigation">
-                    <FilterLink parameters={{}} name="all" text="All" icon="home" onClick={this.handleNavClick} active={this.props.filter === "all"}/>
+                    <FilterLink parameters={{done: false}} name="inbox" text="Inbox" icon="home" onClick={this.handleNavClick} active={this.props.filter === "inbox"}/>
                     <FilterLink parameters={{favourite: true}} name="favourites" text="Favourites" icon="favorite" onClick={this.handleNavClick} active={this.props.filter === "favourites"}/>
                     <FilterLink parameters={{done: true}} name="done" text="Done" icon="done" onClick={this.handleNavClick} active={this.props.filter === "done"}/>
                     <FilterLink parameters={{unread: false}} name="read" text="Read" icon="drafts" onClick={this.handleNavClick} active={this.props.filter === "read"}/>

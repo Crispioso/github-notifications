@@ -3,7 +3,7 @@ import { createStore } from 'redux';
 const initialState = {
     checked: true,
     dataFetched: false,
-    filter: 'all',
+    filter: 'inbox',
     customFilters: [],
     parameters: {},
     unreadCount: 0,

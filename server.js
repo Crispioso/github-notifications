@@ -62,6 +62,7 @@ function getNotifications() {
             console.log("Expected 200 response from Github API, instead got '%s %s'", response.status, response.statusText);
             throw('');
         }
+        console.log(response.headers.raw());
         return response.json();
     }).then(response => {
         MongoClient.connect(database, function(err, db) {
