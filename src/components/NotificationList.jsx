@@ -11,7 +11,8 @@ class NotificationList extends Component {
         super(props);
 
         this.state = {
-            notifications: this.props.notifications
+            notifications: this.props.notifications,
+            parameters: this.props.parameters
         };
 
         this.handleOnChange = this.handleOnChange.bind(this);
@@ -25,13 +26,15 @@ class NotificationList extends Component {
             return notification._id === id;
         });
         const dispatch = this.props.dispatch;
-        const notifications = this.state.notifications;
 
         this.state.notifications[notificationIndex][action] = checked;
 
-        postNotificationUpdate(id, action, checked, function() {
-            dispatch(updateNotifications(notifications));
-        });
+        postNotificationUpdate(id, action, checked, this.state.parameters).then(response => {
+            this.setState({notifications: response});
+            dispatch(updateNotifications(response));
+        }).catch(error => {
+            console.log("Error posting notification update \n%s", error);
+        })
     }
 
     render() {
@@ -59,7 +62,8 @@ class NotificationList extends Component {
 
 function mapStateToProps(state) {
     return {
-        notifications: state.notifications
+        notifications: state.notifications,
+        parameters: state.parameters
     }
 }
 

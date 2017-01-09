@@ -51,9 +51,9 @@ class Filters extends Component {
                 <h2 className="mdl-layout-title">Filters</h2>
                 <nav className="mdl-navigation">
                     <FilterLink parameters={{done: false}} name="inbox" text="Inbox" icon="home" onClick={this.handleNavClick} active={this.props.filter === "inbox"}/>
-                    <FilterLink parameters={{favourite: true}} name="favourites" text="Favourites" icon="favorite" onClick={this.handleNavClick} active={this.props.filter === "favourites"}/>
+                    <FilterLink parameters={{favourite: true, done: false}} name="favourites" text="Favourites" icon="favorite" onClick={this.handleNavClick} active={this.props.filter === "favourites"}/>
                     <FilterLink parameters={{done: true}} name="done" text="Done" icon="done" onClick={this.handleNavClick} active={this.props.filter === "done"}/>
-                    <FilterLink parameters={{unread: false}} name="read" text="Read" icon="drafts" onClick={this.handleNavClick} active={this.props.filter === "read"}/>
+                    <FilterLink parameters={{unread: false, done: false}} name="read" text="Read" icon="drafts" onClick={this.handleNavClick} active={this.props.filter === "read"}/>
                 </nav>
                 <CustomFilters onClick={this.handleNavClick}/>
                 <button className="mdl-button mdl-js-button mdl-button--fab mdl-button--mini-fab">

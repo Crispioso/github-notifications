@@ -139,14 +139,19 @@ app.post('/updateNotification/:id', function(req, res) {
     const newData = {};
     newData[field] = value;
 
+    console.log("POST database query:");
+    console.log(req.query);
+
     MongoClient.connect(database, function(err, db) {
         assert.equal(null, err);
         const collection = db.collection('notifications');
         collection.updateOne({_id: id}, {$set: newData, $currentDate: {lastModified: true}}, { upsert:true }, function(err, updatedData) {
             assert.equal(null, err);
-            res.setHeader('Content-Type', 'application/json');
-            newData['_id'] = id;
-            res.send(JSON.stringify(newData));
+            findDocuments(db, buildDBQuery(req.query), function(notifications) {
+                res.setHeader('Content-Type', 'application/json');
+                // newData['_id'] = id;
+                res.send(notifications);
+            });
         });
     });
 });

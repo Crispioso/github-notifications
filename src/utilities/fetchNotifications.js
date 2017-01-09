@@ -1,6 +1,6 @@
 import store from '../shared/store';
 import { updateFetchedBool, updateNotifications, updateUnreadCount } from '../shared/actions';
-import models from '../models/models';
+import buildRequestParameters from './buildRequestParameters';
 
 /**
  * Fetches notifications data from the server
@@ -8,19 +8,7 @@ import models from '../models/models';
  */
 
 function fetchNotifications(parameters) {
-    let validatedParameters;
-    
-    if (parameters) {
-        validatedParameters = [];
-        Object.keys(parameters).forEach(property => {
-            if (models.parameters[property] === undefined) {
-                console.warn('%s is an invalid parameter so has been excluded from the request', property);
-                return;
-            }
-            validatedParameters.push(property + "=" + parameters[property]);
-        });
-        validatedParameters = "?" + validatedParameters.join('&');
-    }
+    let validatedParameters = buildRequestParameters(parameters);
 
     store.dispatch(updateFetchedBool(false));
 

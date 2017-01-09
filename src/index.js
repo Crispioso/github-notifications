@@ -10,7 +10,7 @@ import createBrowserHistory from 'history/createBrowserHistory';
 
 // state modules
 import { Provider } from 'inferno-redux';
-import { updateFilter } from './shared/actions';
+import { updateFilter, updateParameters } from './shared/actions';
 import store from './shared/store';
 
 // utility modules
@@ -26,6 +26,7 @@ if (module.hot) {
 
 // Load default 'inbox' filter
 fetchNotifications({done: false});
+store.dispatch(updateParameters({done: false}));
 store.dispatch(updateFilter('inbox'));
 
 const browserHistory = createBrowserHistory();
