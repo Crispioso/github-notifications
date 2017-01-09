@@ -7,7 +7,14 @@ export const UPDATE_FETCHED_BOOL = 'UPDATE_FETCHED_BOOL';
 export const UPDATE_UNREAD_COUNT = 'UPDATE_UNREAD_COUNT';
 export const UPDATE_FILTER = 'UPDATE_FILTER';
 export const UPDATE_PARAMETERS = 'UPDATE_PARAMETERS';
+export const UPDATE_MAIN_VIEW = 'UPDATE_MAIN_VIEW';
 
+export function updateMainView(view) {
+    return {
+        type: UPDATE_MAIN_VIEW,
+        mainView: view
+    }
+}
 
 export function toggleRead(boolean) {
     return {

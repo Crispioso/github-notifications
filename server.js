@@ -57,13 +57,17 @@ const createIndexes = function(db) {
     });
 };
 
-function getNotifications() {
-    fetch('https://api.github.com/notifications?all=true&access_token=' + config.auth_token).then(response => {
+function getNotifications(pageNumber) {
+    let hasNextPage = false;
+    const thisPageNumber = pageNumber ? (pageNumber + 1) : 1;
+    const url = 'https://api.github.com/notifications?all=true' + '&page=' + thisPageNumber + '&access_token=' + config.auth_token;
+
+    fetch(url).then(response => {
         if (response.status !== 200) {
             console.log("Expected 200 response from Github API, instead got '%s %s'", response.status, response.statusText);
             throw('');
         }
-        // console.log(response.headers.raw());
+        hasNextPage = (response.headers.get('link').indexOf('rel="next"') !== -1);
         return response.json();
     }).then(response => {
         MongoClient.connect(database, function(err, db) {
@@ -101,6 +105,10 @@ function getNotifications() {
                 if (err) {
                     console.log("Error finding document");
                 } else {
+                    if (hasNextPage) {
+                        getNotifications(thisPageNumber);
+                        return;
+                    }
                     db.close();
                 }
             });
@@ -122,7 +130,6 @@ function getNotificationWebURL(apiURL, callback) {
 
 app.get('/', function(req, res){
     res.sendFile(path.join(__dirname+'/index.html'));
-    //__dirname : It will resolve to your project folder.
 });
 
 app.get('/notificationsData', function(req, res) {
@@ -130,15 +137,18 @@ app.get('/notificationsData', function(req, res) {
     MongoClient.connect(database, function(err, db) {
         assert.equal(null, err);
 
-        findDocuments(db, buildDBQuery(req.query), function(notifications) {
-            const response = addNotificationsMetadata(notifications);
-            res.json(response);
-            db.close();
+        const dbQuery = buildDBQuery(req.query);
+
+        findDocuments(db, dbQuery, function(notifications) {
+            addNotificationsMetadata(db, dbQuery, notifications, function(response) {
+                res.json(response);
+                db.close();
+            });
         });
     });
 });
 
-app.use( bodyParser.json() );
+app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({
     extended: true
 }));
@@ -157,10 +167,13 @@ app.post('/updateNotification/:id', function(req, res) {
         const collection = db.collection('notifications');
         collection.updateOne({_id: id}, {$set: newData, $currentDate: {lastModified: true}}, { upsert:true }, function(err, updatedData) {
             assert.equal(null, err);
-            findDocuments(db, buildDBQuery(req.query), function(notifications) {
-                res.setHeader('Content-Type', 'application/json');
-                // newData['_id'] = id;
-                res.send(notifications);
+            const dbQuery = buildDBQuery(req.query);
+
+            findDocuments(db, dbQuery, function(notifications) {
+                addNotificationsMetadata(db, dbQuery, notifications, function(response) {
+                    res.setHeader('Content-Type', 'application/json');
+                    res.json(response);
+                });
             });
         });
     });
@@ -172,19 +185,16 @@ app.listen(config.port, function () {
 
 app.use(express.static('dist'));
 
-function addNotificationsMetadata(notifications) {
-    let metadata = {
-        unreadCount: 0
-    };
-    let combinedObject = {metadata: metadata, notifications: notifications};
+function addNotificationsMetadata(db, dbQuery, notifications, callback) {
+    const collection = db.collection('notifications');
 
-    notifications.map(value => {
-        if (value.unread) {
-            metadata.unreadCount++;
-        }
+    collection.find(dbQuery).count(function(err, count) {
+        callback({
+            totalCount: count,
+            pageCount: Math.ceil(count / 50),
+            notifications: notifications
+        });
     });
-
-    return combinedObject;
 }
 
 function buildDBQuery(parameters) {

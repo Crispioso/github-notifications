@@ -13,16 +13,9 @@ class App extends Component {
 
         this.state = {
             dataFetched: props.dataFetched,
-            notifications: props.notifications
+            notifications: props.notifications,
+            mainView: props.mainView
         }
-    }
-
-    componentWillReceiveProps(nextProps) {
-        // Global state has updated, so update impacted component state
-        this.setState({
-            dataFetched: nextProps.dataFetched,
-            notifications: nextProps.notifications
-        });
     }
 
     render() {
@@ -32,21 +25,41 @@ class App extends Component {
                 <Filters/>
                 <main className="main mdl-layout__content mdl-color--grey-100">
                     <div className="page-content">
-                        {this.state.dataFetched ?
-                            <NotificationList notifications={this.state.notifications}/>
-                            : <Loader/>
-                        }
+                        {this.renderSelector()}
                     </div>
                 </main>
             </div>
         )
+    }
+
+    renderSelector() {
+        switch (this.props.mainView) {
+            case ("notifications"): {
+                return (
+                    this.props.dataFetched ?
+                        <NotificationList notifications={this.props.notifications}/>
+                        : <Loader/>
+
+                );
+            }
+            case("addFilter"): {
+                return (
+                    <p>Add new filter...</p>
+                );
+            }
+            default: {
+                debugger;
+                break;
+            }
+        }
     }
 }
 
 function mapStateToProps(state) {
     return {
         dataFetched: state.dataFetched,
-        notifications: state.notifications
+        notifications: state.notifications,
+        mainView: state.mainView
     }
 }
 

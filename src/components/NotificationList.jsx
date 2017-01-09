@@ -1,7 +1,7 @@
 import Inferno from 'inferno';
 import Component from 'inferno-component';
 import { connect } from 'inferno-redux';
-import { updateNotifications } from '../shared/actions';
+import { updateNotifications, updateUnreadCount } from '../shared/actions';
 import postNotificationUpdate from '../utilities/postNotificationUpdate';
 import NotificationItem from './NotificationItem.jsx';
 
@@ -30,8 +30,13 @@ class NotificationList extends Component {
         this.state.notifications[notificationIndex][action] = checked;
 
         postNotificationUpdate(id, action, checked, this.state.parameters).then(response => {
-            this.setState({notifications: response});
-            dispatch(updateNotifications(response));
+            this.setState({
+                notifications: response.notifications,
+                unreadCount: response.totalCount
+
+            });
+            dispatch(updateNotifications(response.notifications));
+            dispatch(updateUnreadCount(response.totalCount));
         }).catch(error => {
             console.log("Error posting notification update \n%s", error);
         })

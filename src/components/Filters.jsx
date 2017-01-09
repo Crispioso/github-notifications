@@ -1,8 +1,8 @@
-import Inferno from 'inferno';
+import Inferno, { linkEvent } from 'inferno';
 import Component from 'inferno-component'
 import { connect } from 'inferno-redux'
 import fetchNotifications from '../utilities/fetchNotifications';
-import { updateFilter, updateParameters } from '../shared/actions';
+import { updateFilter, updateParameters, updateMainView } from '../shared/actions';
 import FilterLink from './FilterLink.jsx';
 import CustomFilters from './CustomFilters.jsx';
 
@@ -41,8 +41,14 @@ class Filters extends Component {
             parameters[parameterTitle] = attribute.value;
         });
 
+        dispatch(updateMainView('notifications'));
         dispatch(updateParameters(parameters));
         dispatch(updateFilter(filter));
+    }
+
+    handleAddClick(instance) {
+        instance.props.dispatch(updateFilter(''));
+        instance.props.dispatch(updateMainView('addFilter'));
     }
 
     render() {
@@ -55,8 +61,8 @@ class Filters extends Component {
                     <FilterLink parameters={{done: true}} name="done" text="Done" icon={{type: 'done', class: 'done'}} onClick={this.handleNavClick} active={this.props.filter === "done"}/>
                 </nav>
                 <CustomFilters onClick={this.handleNavClick}/>
-                <button className="mdl-button mdl-js-button mdl-button--fab mdl-button--mini-fab">
-                    <i className="material-icons">add</i>
+                <button onClick={linkEvent(this, this.handleAddClick)} className="mdl-button mdl-js-button mdl-button--fab mdl-button--mini-fab">
+                    <i id="add-filter" className="material-icons">add</i>
                 </button>
             </div>
         )

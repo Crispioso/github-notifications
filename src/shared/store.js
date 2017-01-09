@@ -4,6 +4,7 @@ const initialState = {
     checked: true,
     dataFetched: false,
     filter: 'inbox',
+    mainView: 'notifications',
     customFilters: [],
     parameters: {},
     unreadCount: 0,
@@ -45,6 +46,11 @@ function reducer(state = initialState, action) {
         case ('UPDATE_PARAMETERS'): {
             return Object.assign({}, state, {
                 parameters: action.parameters
+            })
+        }
+        case ('UPDATE_MAIN_VIEW'): {
+            return Object.assign({}, state, {
+                mainView: action.mainView
             })
         }
         default: {
