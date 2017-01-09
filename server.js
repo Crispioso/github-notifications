@@ -90,8 +90,12 @@ function getNotifications() {
                         updated_at: notification.updated_at,
                         last_read_at: notification.last_read_at
                     });
-                    updateOne(db, thisObj, function() {});
-                    callback();
+
+                    getNotificationWebURL(notification.subject.url, webURL => {
+                        thisObj.web_url = webURL;
+                        updateOne(db, thisObj, function() {});
+                        callback();
+                    });
                 });
             }, function(err) {
                 if (err) {
@@ -108,6 +112,12 @@ function getNotifications() {
 
 getNotifications();
 setInterval(getNotifications, 60000);
+
+function getNotificationWebURL(apiURL, callback) {
+    fetch(apiURL + '?access_token=' + config.auth_token).then(response => response.json()).then(response => {
+        callback(response.html_url);
+    });
+}
 
 
 app.get('/', function(req, res){

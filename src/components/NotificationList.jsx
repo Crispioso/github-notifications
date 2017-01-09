@@ -47,7 +47,7 @@ class NotificationList extends Component {
                         return <NotificationItem title={notification.title} type={notification.type}
                                                  repoId={notification.repo_id}
                                                  repoName={notification.repo_full_name}
-                                                 url={notification.url}
+                                                 url={notification.web_url}
                                                  date={notification.updated_at}
                                                 id={notification._id}
                                                 done={notification.done}

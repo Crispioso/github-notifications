@@ -25,7 +25,7 @@ class FilterLink extends Component {
             <a id={"filter-" + this.props.name} data-filter={this.props.name}
                className={"mdl-navigation__link filters__link" + (this.props.active ? " active" : "")} href=""
                onClick={this.props.onClick}>
-                <i className="material-icons filters__icon">{this.props.icon}</i>
+                <i className={"material-icons filters__icon icon icon--" + this.props.icon.class + (this.props.active ? " checked" : "")}>{this.props.icon.type}</i>
                 {this.props.text}
             </a>
         )
