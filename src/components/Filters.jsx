@@ -22,11 +22,12 @@ class Filters extends Component {
         fetchNotifications(nextProps.parameters);
     }
 
-    handleNavClick(event) {
+    handleNavClick(options) {
+
         // event.preventDefault();
         //
         // const filter = event.target.dataset.filter;
-        // const dispatch = this.props.dispatch;
+        const dispatch = this.props.dispatch;
         // const attributes = event.target.attributes;
         //
         // // Build up parameters
@@ -42,14 +43,10 @@ class Filters extends Component {
         //     parameters[parameterTitle] = attribute.value;
         // });
         //
-        // dispatch(updateMainView('notifications'));
-        // dispatch(updateParameters(parameters));
-        // dispatch(updateFilter(filter));
-    }
-
-    handleAddClick(instance) {
-        instance.props.dispatch(updateFilter(''));
-        instance.props.dispatch(updateMainView('addFilter'));
+        debugger;
+        dispatch(updateMainView('notifications'));
+        dispatch(updateParameters(options.parameters));
+        dispatch(updateFilter(options.filter));
     }
 
     render() {

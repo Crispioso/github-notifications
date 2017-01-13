@@ -6,26 +6,23 @@ class FilterLink extends Component {
     constructor(props) {
         super(props);
 
-        this.addDynamicParameters = this.addDynamicParameters.bind(this);
+        this.handleClick = this.handleClick.bind(this);
     }
 
-    addDynamicParameters(domNode) {
-        const parameters = this.props.parameters;
-        Object.keys(parameters).map(key => {
-            domNode.setAttribute('data-param-' + key, parameters[key]);
-        });
-    }
+    handleClick() {
+        const onClick = this.props.onClick;
+        const response = {parameters: this.props.parameters, filter: this.props.name}
 
-    componentDidMount() {
-        // const domNode = document.getElementById('filter-' + this.props.name);
-        // this.addDynamicParameters(domNode);
+        if (onClick) {
+            onClick(response);
+        }
     }
 
     render() {
         return (
             <Link to={this.props.name} id={"filter-" + this.props.name} data-filter={this.props.name}
                className={"mdl-navigation__link filters__link" + (this.props.active ? " active" : "")} href=""
-               onClick={this.props.onClick}>
+               onClick={this.handleClick}>
                 <i className={"material-icons filters__icon icon icon--" + this.props.icon.class + (this.props.active ? " checked" : "")}>{this.props.icon.type}</i>
                 {this.props.text}
             </Link>

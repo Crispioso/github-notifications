@@ -17,7 +17,6 @@ class Notifications extends Component {
     }
 
     render() {
-        console.log(this.props.filter);
         return (
             this.props.dataFetched ?
                 <NotificationList notifications={this.props.notifications}/>
