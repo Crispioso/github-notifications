@@ -1,5 +1,6 @@
 import Inferno from 'inferno';
 import Component from 'inferno-component'
+import { Link } from 'inferno-router';
 
 class FilterLink extends Component {
     constructor(props) {
@@ -16,18 +17,18 @@ class FilterLink extends Component {
     }
 
     componentDidMount() {
-        const domNode = document.getElementById('filter-' + this.props.name);
-        this.addDynamicParameters(domNode);
+        // const domNode = document.getElementById('filter-' + this.props.name);
+        // this.addDynamicParameters(domNode);
     }
 
     render() {
         return (
-            <a id={"filter-" + this.props.name} data-filter={this.props.name}
+            <Link to={this.props.name} id={"filter-" + this.props.name} data-filter={this.props.name}
                className={"mdl-navigation__link filters__link" + (this.props.active ? " active" : "")} href=""
                onClick={this.props.onClick}>
                 <i className={"material-icons filters__icon icon icon--" + this.props.icon.class + (this.props.active ? " checked" : "")}>{this.props.icon.type}</i>
                 {this.props.text}
-            </a>
+            </Link>
         )
     }
 }

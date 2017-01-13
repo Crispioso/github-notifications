@@ -2,7 +2,7 @@
 
 export const TOGGLE_READ = 'TOGGLE_READ';
 export const UPDATE_NOTIFICATIONS = 'UPDATE_NOTIFICATIONS';
-export const TOGGLE_CHECKED = 'TOGGLE_CHECKED';
+// export const TOGGLE_CHECKED = 'TOGGLE_CHECKED';
 export const UPDATE_FETCHED_BOOL = 'UPDATE_FETCHED_BOOL';
 export const UPDATE_UNREAD_COUNT = 'UPDATE_UNREAD_COUNT';
 export const UPDATE_FILTER = 'UPDATE_FILTER';
@@ -51,13 +51,13 @@ export function updateNotifications(notifications) {
     }
 }
 
-export function toggleChecked(notificationId, checked) {
-    return {
-        type: TOGGLE_CHECKED,
-        notificationId: notificationId,
-        checked: checked
-    }
-}
+// export function toggleChecked(notificationId, checked) {
+//     return {
+//         type: TOGGLE_CHECKED,
+//         notificationId: notificationId,
+//         checked: checked
+//     }
+// }
 
 export function updateUnreadCount(unreadCount) {
     return {

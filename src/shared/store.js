@@ -28,11 +28,11 @@ function reducer(state = initialState, action) {
                 unreadCount: action.unreadCount
             })
         }
-        case ('TOGGLE_CHECKED'): {
-            return Object.assign({}, state, {
-                checked: action.checked
-            })
-        }
+        // case ('TOGGLE_CHECKED'): {
+        //     return Object.assign({}, state, {
+        //         checked: action.checked
+        //     })
+        // }
         case ('TOGGLE_READ'): {
             return Object.assign({}, state, {
                 notifications: action.notifications

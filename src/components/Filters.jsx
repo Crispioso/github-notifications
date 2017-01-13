@@ -1,6 +1,7 @@
 import Inferno, { linkEvent } from 'inferno';
 import Component from 'inferno-component'
 import { connect } from 'inferno-redux'
+import { Link } from 'inferno-router';
 import fetchNotifications from '../utilities/fetchNotifications';
 import { updateFilter, updateParameters, updateMainView } from '../shared/actions';
 import FilterLink from './FilterLink.jsx';
@@ -22,28 +23,28 @@ class Filters extends Component {
     }
 
     handleNavClick(event) {
-        event.preventDefault();
-
-        const filter = event.target.dataset.filter;
-        const dispatch = this.props.dispatch;
-        const attributes = event.target.attributes;
-
-        // Build up parameters
-        let parameters = {};
-
-        Array.prototype.slice.call(attributes).forEach(attribute => {
-            const isParameterAttribute = attribute.name.substring(0, 10) === "data-param";
-            if (!isParameterAttribute) {
-                return;
-            }
-
-            const parameterTitle = attribute.name.substring(11, (attribute.name.length));
-            parameters[parameterTitle] = attribute.value;
-        });
-
-        dispatch(updateMainView('notifications'));
-        dispatch(updateParameters(parameters));
-        dispatch(updateFilter(filter));
+        // event.preventDefault();
+        //
+        // const filter = event.target.dataset.filter;
+        // const dispatch = this.props.dispatch;
+        // const attributes = event.target.attributes;
+        //
+        // // Build up parameters
+        // let parameters = {};
+        //
+        // Array.prototype.slice.call(attributes).forEach(attribute => {
+        //     const isParameterAttribute = attribute.name.substring(0, 10) === "data-param";
+        //     if (!isParameterAttribute) {
+        //         return;
+        //     }
+        //
+        //     const parameterTitle = attribute.name.substring(11, (attribute.name.length));
+        //     parameters[parameterTitle] = attribute.value;
+        // });
+        //
+        // dispatch(updateMainView('notifications'));
+        // dispatch(updateParameters(parameters));
+        // dispatch(updateFilter(filter));
     }
 
     handleAddClick(instance) {
@@ -61,9 +62,9 @@ class Filters extends Component {
                     <FilterLink parameters={{done: true}} name="done" text="Done" icon={{type: 'done', class: 'done'}} onClick={this.handleNavClick} active={this.props.filter === "done"}/>
                 </nav>
                 <CustomFilters onClick={this.handleNavClick}/>
-                <button onClick={linkEvent(this, this.handleAddClick)} className="mdl-button mdl-js-button mdl-button--fab mdl-button--mini-fab">
+                <Link to="/custom-filter" className="mdl-button mdl-js-button mdl-button--fab mdl-button--mini-fab">
                     <i id="add-filter" className="material-icons">add</i>
-                </button>
+                </Link>
             </div>
         )
     }

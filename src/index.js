@@ -1,11 +1,12 @@
 // inferno module
 import Inferno from 'inferno';
+import Component from 'inferno-component'
 
 // scss module
 import './scss/main.scss';
 
 // routing modules
-import { Router, Route } from 'inferno-router';
+import { Router, Route, IndexRoute } from 'inferno-router';
 import createBrowserHistory from 'history/createBrowserHistory';
 
 // state modules
@@ -19,6 +20,10 @@ import './shared/material-ui';
 
 // app components
 import App from './components/App.jsx';
+import Notifications from './views/Notifications.jsx';
+import AddFilter from './components/AddFilter.jsx';
+import EditFilter from './components/EditFilter.jsx';
+import CustomFilter from './views/CustomFilter.jsx';
 
 if (module.hot) {
     require('inferno-devtools');
@@ -31,10 +36,23 @@ store.dispatch(updateFilter('inbox'));
 
 const browserHistory = createBrowserHistory();
 
+class NoMatch extends Component {
+    render() {
+        return <p>No Match</p>
+    }
+}
+
 const routes = (
 	<Provider store={store}>
 		<Router history={ browserHistory }>
-			<Route path="/" component={ App }/>
+            <App>
+                <Route path="/" component={ Notifications } />
+                <Route path="/:filter" component={ Notifications } />
+                <Route path="/custom-filter" component={ AddFilter }>
+                    <Route path="/custom-filter/:id" component={ EditFilter }/>
+                </Route>
+                <Route path="*" component={NoMatch}/>
+            </App>
 		</Router>
 	</Provider>
 );

@@ -119,7 +119,7 @@ function getNotifications(pageNumber) {
 }
 
 getNotifications();
-setInterval(getNotifications, 60000);
+// setInterval(getNotifications, 60000);
 
 function getNotificationWebURL(apiURL, callback) {
     fetch(apiURL + '?access_token=' + config.auth_token).then(response => response.json()).then(response => {
@@ -127,10 +127,6 @@ function getNotificationWebURL(apiURL, callback) {
     });
 }
 
-
-app.get('/', function(req, res){
-    res.sendFile(path.join(__dirname+'/index.html'));
-});
 
 app.get('/notificationsData', function(req, res) {
 
@@ -146,6 +142,10 @@ app.get('/notificationsData', function(req, res) {
             });
         });
     });
+});
+
+app.get('/', function(req, res){
+    res.sendFile(path.join(__dirname+'/index.html'));
 });
 
 app.use(bodyParser.json());

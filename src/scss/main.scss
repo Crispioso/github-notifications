@@ -80,6 +80,7 @@ body {
 
 .title {
     font-size: 22px;
+    font-weight: 300;
 }
 
 .drawer {
@@ -130,18 +131,6 @@ body {
     &__icon {
         margin-right: 16px;
         margin-left: 16px;
-
-        //&--done.checked {
-        //    color: #4CAF50;
-        //}
-        //
-        //&--favourite.checked {
-        //    color: #FFC107;
-        //}
-        //
-        //&:hover {
-        //    cursor: pointer;
-        //}
     }
 
     &__item {
@@ -223,4 +212,78 @@ body {
         -webkit-transform: rotate(360deg);
         transform: rotate(360deg);
     }
+}
+
+.edit-filters {
+    overflow: hidden;
+    background: white;
+    padding: 16px;
+
+    &__title {
+        margin-top: 0;
+        margin-bottom: 0;
+        font-weight: 300;
+        font-size: 28px;
+    }
+
+    &__sub-title {
+        color: #757575;
+        margin-bottom: 32px;
+    }
+
+    &__error {
+        color: #C62828;
+        font-weight: 400;
+    }
+
+
+}
+
+.accordion {
+    //border-bottom: 1px solid #ECECEC;
+    //margin-bottom: -1px;
+    //overflow-y: scroll;
+    overflow: hidden;
+
+    &__title {
+        button {
+            padding: 0;
+            font-size: 17px;
+            background: transparent;
+            border: 0;
+            display: block;
+            height: 100%;
+            width: 100%;
+            text-align: left;
+
+            &:hover {
+                cursor: pointer;
+            }
+
+            &:focus {
+                outline: 0;
+            }
+        }
+    }
+
+    // Needed so that accordion content is hidden
+    &__content-container {
+        overflow: hidden;
+        //border-top: 1px solid #ECECEC;
+        //border-bottom: 1px solid #ECECEC;
+    }
+
+    &__content {
+        overflow: hidden;
+        position: fixed;
+        left: -99999px;
+        //height: 0;
+        //transition: .5s cubic-bezier(0, 1, 0.5, 1);
+        //transform: translateY(-100%);
+        //
+        //&.active {
+        //    transform: translateY(-0);
+        //}
+    }
+
 }
