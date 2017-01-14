@@ -23,7 +23,6 @@ import App from './components/App.jsx';
 import Notifications from './views/Notifications.jsx';
 import AddFilter from './components/AddFilter.jsx';
 import EditFilter from './components/EditFilter.jsx';
-import CustomFilter from './views/CustomFilter.jsx';
 
 if (module.hot) {
     require('inferno-devtools');
@@ -38,7 +37,7 @@ const browserHistory = createBrowserHistory();
 
 class NoMatch extends Component {
     render() {
-        return <p>No Match</p>
+        return <p>Page not found</p>
     }
 }
 

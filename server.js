@@ -6,6 +6,7 @@ import bodyParser from 'body-parser';
 import models from './src/models/models';
 import parseBool from './src/utilities/parseBool';
 const app = express();
+const router = express.Router();
 const config = {
     port: process.env.PORT || 3000,
     auth_token: process.env.OAUTH_TOKEN
@@ -128,7 +129,7 @@ function getNotificationWebURL(apiURL, callback) {
 }
 
 
-app.get('/notificationsData', function(req, res) {
+router.get('/notificationsData', function(req, res) {
 
     MongoClient.connect(database, function(err, db) {
         assert.equal(null, err);
@@ -144,14 +145,18 @@ app.get('/notificationsData', function(req, res) {
     });
 });
 
-app.get('/', function(req, res){
+router.get('/', function(req, res){
+    console.log("Request for %s", req.params.path);
     res.sendFile(path.join(__dirname+'/index.html'));
 });
+
+app.use('/', router);
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({
     extended: true
 }));
+app.use(express.static('dist'));
 app.post('/updateNotification/:id', function(req, res) {
     const id = req.params.id;
     const field = req.body.field;
@@ -182,8 +187,6 @@ app.post('/updateNotification/:id', function(req, res) {
 app.listen(config.port, function () {
     console.log('Inferno app started \nPORT: %s\nOAUTH_TOKEN: %s\n', config.port, config.auth_token);
 });
-
-app.use(express.static('dist'));
 
 function addNotificationsMetadata(db, dbQuery, notifications, callback) {
     const collection = db.collection('notifications');

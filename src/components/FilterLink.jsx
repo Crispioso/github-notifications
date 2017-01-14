@@ -11,7 +11,7 @@ class FilterLink extends Component {
 
     handleClick() {
         const onClick = this.props.onClick;
-        const response = {parameters: this.props.parameters, filter: this.props.name}
+        const response = {parameters: this.props.parameters, filter: this.props.name};
 
         if (onClick) {
             onClick(response);

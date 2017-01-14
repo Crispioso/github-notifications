@@ -23,27 +23,8 @@ class Filters extends Component {
     }
 
     handleNavClick(options) {
-
-        // event.preventDefault();
-        //
-        // const filter = event.target.dataset.filter;
         const dispatch = this.props.dispatch;
-        // const attributes = event.target.attributes;
-        //
-        // // Build up parameters
-        // let parameters = {};
-        //
-        // Array.prototype.slice.call(attributes).forEach(attribute => {
-        //     const isParameterAttribute = attribute.name.substring(0, 10) === "data-param";
-        //     if (!isParameterAttribute) {
-        //         return;
-        //     }
-        //
-        //     const parameterTitle = attribute.name.substring(11, (attribute.name.length));
-        //     parameters[parameterTitle] = attribute.value;
-        // });
-        //
-        debugger;
+
         dispatch(updateMainView('notifications'));
         dispatch(updateParameters(options.parameters));
         dispatch(updateFilter(options.filter));
