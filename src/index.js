@@ -44,17 +44,19 @@ class NoMatch extends Component {
 const routes = (
 	<Provider store={store}>
 		<Router history={ browserHistory }>
-            <App>
-                <Route path="/" component={ Notifications } />
+            <Route component={ App }>
+                <IndexRoute component={ Notifications } />
                 <Route path="/:filter" component={ Notifications } />
                 <Route path="/custom-filter" component={ AddFilter }>
                     <Route path="/custom-filter/:id" component={ EditFilter }/>
                 </Route>
                 <Route path="*" component={NoMatch}/>
-            </App>
+            </Route>
 		</Router>
 	</Provider>
 );
+
+
 
 Inferno.render(routes, document.getElementById('app'));
 

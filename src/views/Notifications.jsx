@@ -4,6 +4,8 @@ import { connect } from 'inferno-redux';
 
 import Loader from '../components/Loader.jsx';
 import NotificationList from '../components/NotificationList.jsx';
+import App from '../components/App.jsx';
+import UnreadCount from '../components/UnreadCount.jsx';
 
 class Notifications extends Component {
     constructor(props) {
@@ -11,17 +13,20 @@ class Notifications extends Component {
 
         this.state = {
             dataFetched: props.dataFetched,
-            notifications: props.notifications,
-            mainView: props.mainView
+            notifications: props.notifications
         }
     }
 
     render() {
         return (
-            this.props.dataFetched ?
-                <NotificationList notifications={this.props.notifications}/>
-                :
-                <Loader/>
+            <div>
+                {
+                    this.props.dataFetched ?
+                    <NotificationList notifications={this.props.notifications}/>
+                    :
+                    <Loader/>
+                }
+            </div>
         )
     }
 }
@@ -30,8 +35,7 @@ class Notifications extends Component {
 function mapStateToProps(state) {
     return {
         dataFetched: state.dataFetched,
-        notifications: state.notifications,
-        mainView: state.mainView
+        notifications: state.notifications
     }
 }
 
