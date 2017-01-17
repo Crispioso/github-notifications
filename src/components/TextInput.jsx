@@ -14,7 +14,7 @@ class TextInput extends Component {
     }
 
     handleFocus() {
-        this.setState({isFocused: true});
+        this.setState({isFocused: !this.state.isFocused});
     }
 
     handleInput(event) {
@@ -30,7 +30,7 @@ class TextInput extends Component {
     render() {
         return (
             <div className={"mdl-textfield mdl-textfield--floating-label" + (this.state.isFocused ? " is-focused" : "")}>
-                <input className="mdl-textfield__input" type="text" id={this.props.id} onFocus={this.handleFocus} onInput={this.handleInput}/>
+                <input className="mdl-textfield__input" type="text" id={this.props.id} onFocus={this.handleFocus} onBlur={this.handleFocus} onInput={this.handleInput}/>
                 <label className="mdl-textfield__label" htmlFor={this.props.id}>{this.props.label}</label>
             </div>
         )

@@ -14,8 +14,8 @@ class CustomFilters extends Component {
         const onClick = this.props.onClick;
         const response = {
             parameters: {
-                repoId: `71245455`,
-                type: `PullRequest`
+                "repo-id": `71245455`,
+                "type": `PullRequest`
             },
             filter: this.props.name
         };
@@ -30,7 +30,16 @@ class CustomFilters extends Component {
             <div>
                 <h3 className="drawer__subheading">Custom</h3>
                 <nav className="mdl-navigation">
-                    <Link to="cdn-pull-requests" data-filter="custom-1" id="cdn-pull-requests" className="mdl-navigation__link" data-param-repo-id="71245455" data-param-type="PullRequest" href="" onClick={this.props.onClick}>CDN pull requests</Link>
+                    <Link to="/filter/cdn-pull-requests"
+                          data-filter="custom-1"
+                          id="cdn-pull-requests"
+                          className="mdl-navigation__link filters__link"
+                          activeClassName="active"
+                          data-param-repo-id="71245455"
+                          data-param-type="PullRequest"
+                          onClick={this.handleClick}>
+                        CDN pull requests
+                    </Link>
                 </nav>
             </div>
         )

@@ -58,6 +58,15 @@ const createIndexes = function(db) {
     });
 };
 
+const createCustomFilters = function(db) {
+    const collection = db.collection('filters');
+
+    collection.updateOne({}, {$set: {title: "test", parameters: {"repo_id": 71245455, "type": "PullRequest"}}}, {upsert: true}, function(err, updatedItem) {
+        assert.equal(null, err);
+        console.log('Added test filter');
+    });
+};
+
 function getNotifications(pageNumber) {
     let hasNextPage = false;
     const thisPageNumber = pageNumber ? (pageNumber + 1) : 1;
@@ -75,6 +84,7 @@ function getNotifications(pageNumber) {
             assert.equal(null, err);
 
             createIndexes(db);
+            createCustomFilters(db);
 
             async.each(response, function(notification, callback) {
                 const id = notification.id + "-" + notification.repository.owner.login;

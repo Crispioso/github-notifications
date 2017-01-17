@@ -52,6 +52,7 @@
     "async": "^2.1.4",
     "body-parser": "^1.15.2",
     "css-loader": "^0.26.1",
+    "eslint-loader": "^1.6.1",
     "extract-text-webpack-plugin": "^1.0.1",
     "history": "^4.4.0",
     "inferno": "1.0.0-beta42",

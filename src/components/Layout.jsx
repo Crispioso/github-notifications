@@ -1,11 +1,10 @@
 import Inferno from 'inferno';
 import Component from 'inferno-component';
-import { connect } from 'inferno-redux';
-import { updateFilter } from '../shared/actions';
+
 import Filters from './Filters.jsx'
 import Header from './Header.jsx';
 
-class App extends Component {
+class Layout extends Component {
     constructor(props){
         super(props);
     }
@@ -25,4 +24,4 @@ class App extends Component {
     }
 }
 
-export default App;
+export default Layout;

@@ -19,10 +19,11 @@ import fetchNotifications from './utilities/fetchNotifications';
 import './shared/material-ui';
 
 // app components
-import App from './components/App.jsx';
+import Layout from './components/Layout.jsx';
 import Notifications from './views/Notifications.jsx';
 import AddFilter from './components/AddFilter.jsx';
 import EditFilter from './components/EditFilter.jsx';
+import Loader from './components/Loader.jsx';
 
 if (module.hot) {
     require('inferno-devtools');
@@ -44,13 +45,14 @@ class NoMatch extends Component {
 const routes = (
 	<Provider store={store}>
 		<Router history={ browserHistory }>
-            <Route component={ App }>
-                <IndexRoute component={ Notifications } />
-                <Route path="/:filter" component={ Notifications } />
-                <Route path="/custom-filter" component={ AddFilter }>
-                    <Route path="/custom-filter/:id" component={ EditFilter }/>
-                </Route>
-                <Route path="*" component={NoMatch}/>
+            <Route component={ Layout }>
+                <Route path="/" component={ Notifications } />
+                <Route path="/favourites" component={ Notifications } />
+                <Route path="/done" component={ Notifications } />
+                <Route path="/filter" component={ AddFilter } />
+                <Route path="/filter/:filter" component={ Notifications } />
+                <Route path="/filter/:filter/edit" component={ EditFilter } />
+                <Route path="*" component={NoMatch} />
             </Route>
 		</Router>
 	</Provider>

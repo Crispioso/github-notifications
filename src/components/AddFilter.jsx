@@ -1,5 +1,7 @@
 import Inferno from 'inferno';
 import Component from 'inferno-component';
+import { connect } from 'inferno-redux';
+
 import TextInput from './TextInput.jsx';
 
 class AddFilter extends Component {
@@ -33,7 +35,7 @@ class AddFilter extends Component {
             return;
         }
 
-
+        this.context.router.push('/filter/' + name + '/edit');
     }
 
     render() {
@@ -53,6 +55,4 @@ class AddFilter extends Component {
     }
 }
 
-
-
-export default AddFilter;
+export default connect()(AddFilter);

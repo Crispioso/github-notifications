@@ -4,8 +4,6 @@ import { connect } from 'inferno-redux';
 
 import Loader from '../components/Loader.jsx';
 import NotificationList from '../components/NotificationList.jsx';
-import App from '../components/App.jsx';
-import UnreadCount from '../components/UnreadCount.jsx';
 
 class Notifications extends Component {
     constructor(props) {
