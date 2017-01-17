@@ -13,9 +13,9 @@ function fetchNotifications(parameters) {
     store.dispatch(updateFetchedBool(false));
 
     fetch('/notificationsData' + (validatedParameters || "")).then(response=> response.json()).then(response => {
-        store.dispatch(updateNotifications(response.notifications));
+        store.dispatch(updateNotifications(response));
         store.dispatch(updateFetchedBool(true));
-        store.dispatch(updateUnreadCount(response.totalCount));
+        // store.dispatch(updateUnreadCount(response.totalCount));
     });
 }
 

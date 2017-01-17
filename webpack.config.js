@@ -1,8 +1,9 @@
 const webpack = require('webpack');
 const ExtractTextPlugin = require("extract-text-webpack-plugin");
+const CopyWebpackPlugin = require('copy-webpack-plugin');
 
 module.exports = {
-	entry: './client/index.js',
+	entry: './src/index.js',
 	output: {
 		path: './dist',
 		filename: 'bundle.js',
@@ -23,6 +24,9 @@ module.exports = {
 	},
 	plugins: [
 		new webpack.HotModuleReplacementPlugin(),
-        new ExtractTextPlugin("main.css")
+        new ExtractTextPlugin("main.css"),
+        new CopyWebpackPlugin([
+            { from: 'src/index.html', to: 'index.html' }
+        ])
 	]
 };
