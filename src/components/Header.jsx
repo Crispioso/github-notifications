@@ -7,7 +7,7 @@ class Header extends Component {
         return (
             <header className="header mdl-layout__header mdl-layout__header--waterfall">
                 <div className="mdl-layout__header-row">
-                    <h1 className="title">Github notifications</h1>
+                    <h1 className="title">GitHub notifications</h1>
                     <div className="mdl-layout-spacer"></div>
                     <UnreadCount/>
                 </div>
