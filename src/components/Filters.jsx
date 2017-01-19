@@ -19,14 +19,12 @@ class Filters extends Component {
     }
 
     componentWillReceiveProps(nextProps) {
-        fetchNotifications(nextProps.parameters);
+        fetchNotifications(nextProps.filter);
     }
 
-    handleNavClick(options) {
+    handleNavClick(filter) {
         const dispatch = this.props.dispatch;
-
-        dispatch(updateParameters(options.parameters));
-        dispatch(updateFilter(options.filter));
+        dispatch(updateFilter(filter));
     }
 
     render() {
@@ -34,9 +32,9 @@ class Filters extends Component {
             <div className="mdl-layout__drawer filters">
                 <h2 className="mdl-layout-title">Filters</h2>
                 <nav className="mdl-navigation">
-                    <FilterLink parameters={{done: false}} name="" text="Inbox" icon={{type: 'home', class: 'home'}} onClick={this.handleNavClick} active={this.props.filter === ""}/>
-                    <FilterLink parameters={{favourite: true, done: false}} name="favourites" text="Favourites" icon={{type: 'star', class: 'favourite'}} onClick={this.handleNavClick} active={this.props.filter === "favourites"}/>
-                    <FilterLink parameters={{done: true}} name="done" text="Done" icon={{type: 'done', class: 'done'}} onClick={this.handleNavClick} active={this.props.filter === "done"}/>
+                    <FilterLink filter="inbox" name="" text="Inbox" icon={{type: 'home', class: 'home'}} onClick={this.handleNavClick}/>
+                    <FilterLink filter="favourites" name="favourites" text="Favourites" icon={{type: 'star', class: 'favourite'}} onClick={this.handleNavClick}/>
+                    <FilterLink filter="done" name="done" text="Done" icon={{type: 'done', class: 'done'}} onClick={this.handleNavClick}/>
                 </nav>
                 <CustomFilters onClick={this.handleNavClick}/>
                 <Link to="/filter" className="mdl-button mdl-js-button mdl-button--fab mdl-button--mini-fab">

@@ -1,12 +1,8 @@
 import { createStore } from 'redux';
 
 const initialState = {
-    checked: true,
     dataFetched: false,
-    filter: 'inbox',
-    mainView: 'notifications',
-    customFilters: [],
-    parameters: {},
+    filter: '',
     unreadCount: 0,
     notifications: []
 };
@@ -28,11 +24,6 @@ function reducer(state = initialState, action) {
                 unreadCount: action.unreadCount
             })
         }
-        // case ('TOGGLE_CHECKED'): {
-        //     return Object.assign({}, state, {
-        //         checked: action.checked
-        //     })
-        // }
         case ('TOGGLE_READ'): {
             return Object.assign({}, state, {
                 notifications: action.notifications
@@ -41,16 +32,6 @@ function reducer(state = initialState, action) {
         case ('UPDATE_FILTER'): {
             return Object.assign({}, state, {
                 filter: action.filter
-            })
-        }
-        case ('UPDATE_PARAMETERS'): {
-            return Object.assign({}, state, {
-                parameters: action.parameters
-            })
-        }
-        case ('UPDATE_MAIN_VIEW'): {
-            return Object.assign({}, state, {
-                mainView: action.mainView
             })
         }
         default: {

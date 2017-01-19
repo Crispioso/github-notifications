@@ -30,8 +30,7 @@ if (module.hot) {
 }
 
 // Load default 'inbox' filter
-fetchNotifications({done: false});
-store.dispatch(updateParameters({done: false}));
+fetchNotifications('inbox');
 store.dispatch(updateFilter('inbox'));
 
 const browserHistory = createBrowserHistory();

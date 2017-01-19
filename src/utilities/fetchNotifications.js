@@ -4,15 +4,14 @@ import buildRequestParameters from './buildRequestParameters';
 
 /**
  * Fetches notifications data from the server
- * @param parameters - object of parameters and their values to add to the fetch request (eq {repoId: "a12enl", type: "PullRequest"}
+ * @param filter - string of filter name that endpoint recognises (eg favourites)
  */
 
-function fetchNotifications(parameters) {
-    let validatedParameters = buildRequestParameters(parameters);
+function fetchNotifications(filter) {
 
     store.dispatch(updateFetchedBool(false));
 
-    fetch('/notificationsData' + (validatedParameters || "")).then(response=> response.json()).then(response => {
+    fetch('/notifications?filter=' + filter).then(response=> response.json()).then(response => {
         store.dispatch(updateNotifications(response));
         store.dispatch(updateFetchedBool(true));
         // store.dispatch(updateUnreadCount(response.totalCount));

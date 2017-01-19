@@ -13,16 +13,19 @@ class FilterLink extends Component {
         this.handleClick = this.handleClick.bind(this);
     }
 
-    componentWillReceiveProps() {
+    componentWillMount() {
+        this.state.isActive = (this.context.router.location.pathname === ("/" + this.props.name));
+    }
+
+    componentWillUpdate() {
         this.state.isActive = (this.context.router.location.pathname === ("/" + this.props.name));
     }
 
     handleClick() {
         const onClick = this.props.onClick;
-        const response = {parameters: this.props.parameters, filter: this.props.name};
 
         if (onClick) {
-            onClick(response);
+            onClick(this.props.filter);
         }
     }
 
@@ -30,9 +33,9 @@ class FilterLink extends Component {
         return (
             <Link to={"/" + this.props.name}
                   id={"filter-" + this.props.name}
-                  data-filter={this.props.name}
+                  data-filter={this.props.filter}
                   activeClassName="active"
-                  className={"mdl-navigation__link filters__link"}
+                  className="mdl-navigation__link filters__link"
                   onClick={this.handleClick}>
 
                 <i className={"material-icons filters__icon icon icon--" + this.props.icon.class + (this.state.isActive ? " checked" : "")}>

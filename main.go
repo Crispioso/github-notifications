@@ -29,7 +29,7 @@ func main() {
 	collection = session.DB("github-notifications").C("notifications")
 
 	router := pat.New()
-	router.Get("/notificationsData", listNotifications)
+	router.Get("/notifications", listNotifications)
 	router.Get("/{uri:.*}", staticFiles)
 
 	log.Printf("Starting server on %s", bindAddress)
@@ -38,9 +38,23 @@ func main() {
 }
 
 func listNotifications(w http.ResponseWriter, req *http.Request) {
+	var defaultFilters = map[string]bson.M{
+		"inbox": bson.M{"done": false},
+		"done": bson.M{"done": true},
+		"favourites": bson.M{"favourite": true, "done": false},
+	}
 	var notifications []map[string]interface{}
+	var filterName = req.URL.Query().Get("filter")
+	var filter = defaultFilters[filterName]
 
-	err := collection.Find(bson.M{}).All(&notifications)
+	//if filter, ok := defaultFilters[filterName]; ok {
+	//
+	//}
+
+	log.Printf("Filtername: %s", filterName)
+	log.Printf("Filter: %s", filter)
+
+	err := collection.Find(filter).All(&notifications)
 	if err != nil {
 		log.Println(err)
 		w.WriteHeader(500)
@@ -62,6 +76,8 @@ func listNotifications(w http.ResponseWriter, req *http.Request) {
 
 func staticFiles(w http.ResponseWriter, req *http.Request) {
 	path := req.URL.Query().Get(":uri")
+
+	log.Printf("Request for path %s", path)
 
 	HERE:
 
