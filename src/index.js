@@ -39,23 +39,13 @@ const routes = (
 	<Provider store={ store }>
 		<Router history={ browserHistory }>
             <Route component={ Layout }>
-
-                {/*<Route path="/favourites" defaultFilter="favourites" component={ Notifications } />*/}
-                {/*<Route path="/done" defaultFilter="done" component={ Notifications } />*/}
-                <Route path="/filter" component={ AddFilter } />
-                <Route path="/filter/:filter" component={ Notifications } />
-                <Route path="/filter/:filter/edit" component={ EditFilter } />
                 <Route path="" component={ Notifications } />
                 <Route path="/done" component={ Notifications } />
                 <Route path="/favourites" component={ Notifications } />
+                <Route path="/filter" component={ AddFilter } />
+                <Route path="/filter/:filter" component={ Notifications } />
+                <Route path="/filter/:filter/edit" component={ EditFilter } />
                 <Route path="*" component={ NoMatch } />
-                {/*<Route path="/filter" filter="filter" component={ AddFilter } />*/}
-                {/*<Route path="/filter/:filter" filter="filter/:filter" component={ Notifications } />*/}
-                {/*<Route path="/filter/:filter/edit" filter="filter/:filter/edit" component={ EditFilter } />*/}
-                {/*<Route path="/favourites" filter="favourites" component={ Notifications } />*/}
-                {/*<Route path="/done" filter="done" component={ Notifications } />*/}
-                {/*<Route path="" component={ Notifications } />*/}
-                {/*<Route path="*" filter="noMatch" component={NoMatch} />*/}
             </Route>
 		</Router>
 	</Provider>

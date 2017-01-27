@@ -14,13 +14,7 @@ class Filters extends Component {
 
         this.state = {
             filter: props.filter
-        };
-
-        this.handleNavClick = this.handleNavClick.bind(this);
-    }
-
-    handleNavClick(filter) {
-        this.props.dispatch(updateFilter(filter));
+        }
     }
 
     render() {

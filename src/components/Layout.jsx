@@ -1,15 +1,18 @@
 import Inferno from 'inferno';
 import Component from 'inferno-component';
+import { connect } from 'inferno-redux';
+import { updateFilter } from '../shared/actions';
 
 import Filters from './Filters.jsx'
 import Header from './Header.jsx';
 
 class Layout extends Component {
-    constructor(props){
-        super(props);
-    }
-
     render() {
+        const childName = this.props.children.props.component.WrappedComponent.name;
+        if (childName !== "Notifications") {
+            this.props.dispatch(updateFilter(''));
+        }
+
         return (
             <div className="mdl-layout mdl-js-layout mdl-layout--fixed-drawer mdl-layout--fixed-header">
                 <Header/>
@@ -24,4 +27,4 @@ class Layout extends Component {
     }
 }
 
-export default Layout;
+export default connect()(Layout);
