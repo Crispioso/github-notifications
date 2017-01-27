@@ -20,7 +20,12 @@ class Notifications extends Component {
 
     componentWillMount() {
         const splitPath = (this.context.router.location.pathname).split('/');
-        const filter = splitPath[splitPath.length-1];
+        let filter = splitPath[splitPath.length-1];
+
+        // At root, so load 'inbox' filter
+        if (!filter) {
+           filter = 'inbox';
+        }
 
         this.props.dispatch(updateFilter(filter));
         fetchNotifications(filter);

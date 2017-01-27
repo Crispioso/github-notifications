@@ -7,11 +7,14 @@ import Filters from './Filters.jsx'
 import Header from './Header.jsx';
 
 class Layout extends Component {
-    render() {
-        const childName = this.props.children.props.component.WrappedComponent.name;
+    componentWillReceiveProps(props) {
+        const childName = props.children.props.component.WrappedComponent.name;
         if (childName !== "Notifications") {
             this.props.dispatch(updateFilter(''));
         }
+    }
+
+    render() {
 
         return (
             <div className="mdl-layout mdl-js-layout mdl-layout--fixed-drawer mdl-layout--fixed-header">
