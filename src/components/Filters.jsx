@@ -1,9 +1,10 @@
-import Inferno, { linkEvent } from 'inferno';
+import Inferno from 'inferno';
 import Component from 'inferno-component'
 import { connect } from 'inferno-redux'
 import { Link } from 'inferno-router';
+import { updateFilter } from '../shared/actions';
 import fetchNotifications from '../utilities/fetchNotifications';
-import { updateFilter, updateParameters, updateMainView } from '../shared/actions';
+
 import FilterLink from './FilterLink.jsx';
 import CustomFilters from './CustomFilters.jsx';
 
@@ -12,19 +13,14 @@ class Filters extends Component {
         super(props);
 
         this.state = {
-            filter: ''
+            filter: props.filter
         };
 
         this.handleNavClick = this.handleNavClick.bind(this);
     }
 
-    componentWillReceiveProps(nextProps) {
-        fetchNotifications(nextProps.filter);
-    }
-
     handleNavClick(filter) {
-        const dispatch = this.props.dispatch;
-        dispatch(updateFilter(filter));
+        this.props.dispatch(updateFilter(filter));
     }
 
     render() {
@@ -47,8 +43,7 @@ class Filters extends Component {
 
 function mapStateToProps(state) {
     return {
-        filter: state.filter,
-        parameters: state.parameters
+        filter: state.filter
     }
 }
 

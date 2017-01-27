@@ -23,7 +23,6 @@ module.exports = {
 		]
 	},
 	plugins: [
-		new webpack.HotModuleReplacementPlugin(),
         new ExtractTextPlugin("main.css"),
         new CopyWebpackPlugin([
             { from: 'src/index.html', to: 'index.html' }

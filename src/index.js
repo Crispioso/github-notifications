@@ -6,16 +6,14 @@ import Component from 'inferno-component'
 import './scss/main.scss';
 
 // routing modules
-import { Router, Route, IndexRoute } from 'inferno-router';
+import { Router, Route } from 'inferno-router';
 import createBrowserHistory from 'history/createBrowserHistory';
 
 // state modules
 import { Provider } from 'inferno-redux';
-import { updateFilter, updateParameters } from './shared/actions';
 import store from './shared/store';
 
 // utility modules
-import fetchNotifications from './utilities/fetchNotifications';
 import './shared/material-ui';
 
 // app components
@@ -29,10 +27,6 @@ if (module.hot) {
     require('inferno-devtools');
 }
 
-// Load default 'inbox' filter
-fetchNotifications('inbox');
-store.dispatch(updateFilter('inbox'));
-
 const browserHistory = createBrowserHistory();
 
 class NoMatch extends Component {
@@ -42,22 +36,30 @@ class NoMatch extends Component {
 }
 
 const routes = (
-	<Provider store={store}>
+	<Provider store={ store }>
 		<Router history={ browserHistory }>
             <Route component={ Layout }>
-                <Route path="/" component={ Notifications } />
-                <Route path="/favourites" component={ Notifications } />
-                <Route path="/done" component={ Notifications } />
+
+                {/*<Route path="/favourites" defaultFilter="favourites" component={ Notifications } />*/}
+                {/*<Route path="/done" defaultFilter="done" component={ Notifications } />*/}
                 <Route path="/filter" component={ AddFilter } />
                 <Route path="/filter/:filter" component={ Notifications } />
                 <Route path="/filter/:filter/edit" component={ EditFilter } />
-                <Route path="*" component={NoMatch} />
+                <Route path="" component={ Notifications } />
+                <Route path="/done" component={ Notifications } />
+                <Route path="/favourites" component={ Notifications } />
+                <Route path="*" component={ NoMatch } />
+                {/*<Route path="/filter" filter="filter" component={ AddFilter } />*/}
+                {/*<Route path="/filter/:filter" filter="filter/:filter" component={ Notifications } />*/}
+                {/*<Route path="/filter/:filter/edit" filter="filter/:filter/edit" component={ EditFilter } />*/}
+                {/*<Route path="/favourites" filter="favourites" component={ Notifications } />*/}
+                {/*<Route path="/done" filter="done" component={ Notifications } />*/}
+                {/*<Route path="" component={ Notifications } />*/}
+                {/*<Route path="*" filter="noMatch" component={NoMatch} />*/}
             </Route>
 		</Router>
 	</Provider>
 );
-
-
 
 Inferno.render(routes, document.getElementById('app'));
 

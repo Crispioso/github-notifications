@@ -6,7 +6,9 @@
   "scripts": {
     "build": "webpack --progress --colors",
     "watch": "webpack --progress --colors --watch",
-    "start": "webpack --progress --colors && babel-node server.js --presets es2015,stage-2"
+    "start": "webpack --progress --colors && go generate ./... && go run main.go",
+    "server-only": "go generate ./... && go run main.go",
+    "dev-start": "cd assets; go-bindata -debug -o bin-data.go -pkg assets ../dist/... && go run ../main.go"
   },
   "repository": {
     "type": "git",
@@ -56,12 +58,12 @@
     "eslint-loader": "^1.6.1",
     "extract-text-webpack-plugin": "^1.0.1",
     "history": "^4.4.0",
-    "inferno": "1.0.0-beta42",
-    "inferno-component": "^1.0.7",
-    "inferno-create-element": "1.0.0-beta42",
-    "inferno-devtools": "^1.1.2",
-    "inferno-redux": "^1.0.7",
-    "inferno-router": "1.0.0-beta42",
+    "inferno": "latest",
+    "inferno-component": "latest",
+    "inferno-create-element": "latest",
+    "inferno-devtools": "latest",
+    "inferno-redux": "latest",
+    "inferno-router": "latest",
     "node-sass": "^4.1.1",
     "redux": "^3.6.0",
     "sass-loader": "^4.1.1",
