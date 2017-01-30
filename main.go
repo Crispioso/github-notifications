@@ -79,6 +79,21 @@ func listNotifications(w http.ResponseWriter, req *http.Request) {
 	//
 	//}
 
+	if len(filter) == 0 {
+		var customFilter []map[string]interface{}
+		err := filters.Find(bson.M{"slug": filterName}).All(&customFilter)
+		if err != nil {
+			log.Println(err)
+			w.WriteHeader(500)
+			return
+		}
+
+		//log.Printf("Custom filter: %s", customFilter)
+
+		//filter = customFilter["queries"]
+	}
+
+	log.Printf("Filter found: \n%s", filter)
 	log.Printf("Request for filter %s", filterName)
 
 	err := notifications.Find(filter).All(&notificationsResponse)

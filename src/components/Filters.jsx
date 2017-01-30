@@ -2,8 +2,6 @@ import Inferno from 'inferno';
 import Component from 'inferno-component'
 import { connect } from 'inferno-redux'
 import { Link } from 'inferno-router';
-import { updateFilter } from '../shared/actions';
-import fetchNotifications from '../utilities/fetchNotifications';
 
 import FilterLink from './FilterLink.jsx';
 import CustomFilters from './CustomFilters.jsx';
