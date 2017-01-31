@@ -34,7 +34,6 @@ class FilterLink extends Component {
     }
 
     render() {
-        console.log(this.state.isActive);
         return (
             <Link to={"/" + this.props.name}
                   activeClassName="active"

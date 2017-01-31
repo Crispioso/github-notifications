@@ -8,6 +8,7 @@ import Header from './Header.jsx';
 
 class Layout extends Component {
     componentWillReceiveProps(props) {
+        //TODO this breaks when showing 'no match' component
         const childName = props.children.props.component.WrappedComponent.name;
         if (childName !== "Notifications") {
             this.props.dispatch(updateFilter(''));

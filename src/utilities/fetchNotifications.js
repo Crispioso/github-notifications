@@ -1,6 +1,5 @@
 import store from '../shared/store';
-import { updateFetchedBool, updateNotifications, updateUnreadCount } from '../shared/actions';
-import buildRequestParameters from './buildRequestParameters';
+import { updateNotificationsFetchedBool, updateNotifications, updateUnreadCount } from '../shared/actions';
 
 /**
  * Fetches notifications data from the server
@@ -9,11 +8,11 @@ import buildRequestParameters from './buildRequestParameters';
 
 function fetchNotifications(filter) {
 
-    store.dispatch(updateFetchedBool(false));
+    store.dispatch(updateNotificationsFetchedBool(false));
 
     fetch('/notifications?filter=' + filter).then(response=> response.json()).then(response => {
         store.dispatch(updateNotifications(response));
-        store.dispatch(updateFetchedBool(true));
+        store.dispatch(updateNotificationsFetchedBool(true));
         // store.dispatch(updateUnreadCount(response.totalCount));
     });
 }

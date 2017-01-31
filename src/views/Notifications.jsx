@@ -12,7 +12,7 @@ class Notifications extends Component {
         super(props);
 
         this.state = {
-            dataFetched: props.dataFetched,
+            notificationsFetched: props.notificationsFetched,
             notifications: props.notifications,
             filter: props.filter
         };
@@ -35,7 +35,7 @@ class Notifications extends Component {
         return (
             <div>
                 {
-                    this.props.dataFetched ?
+                    this.props.notificationsFetched ?
                     <NotificationList notifications={this.props.notifications}/>
                     :
                     <Loader/>
@@ -48,7 +48,7 @@ class Notifications extends Component {
 
 function mapStateToProps(state) {
     return {
-        dataFetched: state.dataFetched,
+        notificationsFetched: state.notificationsFetched,
         notifications: state.notifications,
         filter: state.filter
     }

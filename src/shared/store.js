@@ -1,17 +1,19 @@
 import { createStore } from 'redux';
 
 const initialState = {
-    dataFetched: false,
+    notificationsFetched: false,
+    filtersFetched: false,
     filter: '',
     unreadCount: 0,
-    notifications: []
+    notifications: [],
+    customFilters: []
 };
 
 function reducer(state = initialState, action) {
     switch (action.type) {
-        case ('UPDATE_FETCHED_BOOL'): {
+        case ('UPDATE_NOTIFICATIONS_FETCHED_BOOL'): {
             return Object.assign({}, state, {
-                dataFetched: action.dataFetched
+                notificationsFetched: action.notificationsFetched
             })
         }
         case ('UPDATE_NOTIFICATIONS'): {
@@ -32,6 +34,16 @@ function reducer(state = initialState, action) {
         case ('UPDATE_FILTER'): {
             return Object.assign({}, state, {
                 filter: action.filter
+            })
+        }
+        case ('UPDATE_FILTERS_FETCHED_BOOL'): {
+            return Object.assign({}, state, {
+                filtersFetched: action.filtersFetched
+            })
+        }
+        case ('UPDATE_CUSTOM_FILTERS'): {
+            return Object.assign({}, state, {
+                customFilters: action.customFilters
             })
         }
         default: {
