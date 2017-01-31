@@ -19,7 +19,11 @@ module.exports = {
             {
                 test: /\.scss$/,
                 loader: ExtractTextPlugin.extract("style-loader", "css-loader!sass-loader")
-            }
+            },
+			{
+				test: /\.jsx$/,
+				loader: "eslint-loader"
+			}
 		]
 	},
 	plugins: [
@@ -27,5 +31,8 @@ module.exports = {
         new CopyWebpackPlugin([
             { from: 'src/index.html', to: 'index.html' }
         ])
-	]
+	],
+    eslint: {
+        configFile: '.eslintrc.json'
+    }
 };
