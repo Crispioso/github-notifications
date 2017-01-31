@@ -2,7 +2,7 @@ import Inferno from 'inferno';
 import Component from 'inferno-component';
 import { connect } from 'inferno-redux';
 import { updateNotifications, updateUnreadCount } from '../shared/actions';
-import postNotificationUpdate from '../utilities/postNotificationUpdate';
+import putNotification from '../utilities/putNotification';
 import NotificationItem from './NotificationItem.jsx';
 
 
@@ -11,42 +11,28 @@ class NotificationList extends Component {
         super(props);
 
         this.state = {
-            notifications: this.props.notifications,
-            parameters: this.props.parameters
+            notifications: props.notifications
         };
 
         this.handleOnChange = this.handleOnChange.bind(this);
     }
 
-    handleOnChange(event) {
-        const id = event.target.dataset.id;
-        const action = event.target.dataset.action;
-        const checked = !event.target.checked;
-        const notificationIndex = this.state.notifications.findIndex(notification => {
-            return notification._id === id;
+    handleOnChange(item) {
+        putNotification(item).then((updatedNotifications) => {
+            this.props.dispatch(updateNotifications(updatedNotifications));
+        }).catch(err => {
+            console.log("Error updating notification \n%s", err);
         });
-        const dispatch = this.props.dispatch;
+    }
 
-        // this.state.notifications[notificationIndex][action] = checked;
-        let newState = this.state;
-        newState.notifications[notificationIndex][action] = checked;
-        this.setState(newState);
-
-        postNotificationUpdate(id, action, checked, this.state.parameters).then(response => {
-            this.setState({
-                notifications: response.notifications,
-                unreadCount: response.totalCount
-
-            });
-            dispatch(updateNotifications(response.notifications));
-            dispatch(updateUnreadCount(response.totalCount));
-        }).catch(error => {
-            console.log("Error posting notification update \n%s", error);
-        })
+    componentWillReceiveProps(nextProps) {
+        // this.setState({
+        //     notifications: nextProps.notifications
+        // })
     }
 
     render() {
-        const notifications = this.state.notifications;
+        const notifications = this.props.notifications;
         return (
             <div className="notifications">
                 {
@@ -69,8 +55,7 @@ class NotificationList extends Component {
 
 function mapStateToProps(state) {
     return {
-        notifications: state.notifications,
-        parameters: state.parameters
+        notifications: state.notifications
     }
 }
 

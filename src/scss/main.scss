@@ -131,6 +131,11 @@ body {
     &__icon {
         margin-right: 16px;
         margin-left: 16px;
+
+        &.disabled {
+            color: #757575;
+            cursor: default !important;
+        }
     }
 
     &__item {

@@ -2,40 +2,20 @@ package main
 
 import (
 	"./assets"
-	"net/http"
+	"encoding/json"
 	"github.com/gorilla/pat"
-	"mime"
-	"path/filepath"
-	"log"
 	"gopkg.in/mgo.v2"
 	"gopkg.in/mgo.v2/bson"
-	"encoding/json"
-	"time"
+	"io/ioutil"
+	"log"
+	"mime"
+	"net/http"
+	"path/filepath"
 )
 
 var session *mgo.Session
 var notifications *mgo.Collection
 var filters *mgo.Collection
-
-type notification struct {
-	GithubID string `bson:"github_id"`
-	RepoID int32 `bson:"repo_id"`
-	RepoOwner string `bson:"repo_owner"`
-	RepoFullName string `bson:"repo_full_name"`
-	RepoURL string `bson:"repo_url"`
-	Title string `bson:"title"`
-	ApiURL string `bson:"api_url"`
-	WebURL string `bson:"web_url"`
-	Type string `bson:"type"`
-	Unread bool `bson:"unread"`
-	Favourite bool `bson:"favourite"`
-	Done bool `bson:"done"`
-	Archived bool `bson:"archived"`
-	Reason string `bson:"reason"`
-	UpdatedAt string `bson:"updated_at"`
-	LastReadAt string `bson:"last_read_at"`
-	LastModified time.Time `bson:"last_modified"`
-}
 
 func main() {
 	bindAddress := `:3000`
@@ -48,10 +28,15 @@ func main() {
 	}
 	defer session.Close()
 
+	session.SetSafe(&mgo.Safe{})
+
 	notifications = session.DB("github-notifications").C("notifications")
+	filters = session.DB("github-notifications").C("filters")
 
 	router := pat.New()
-	router.Post("/filter", addFilter)
+	router.Post("/filters/add", addFilter)
+	router.Get("/filters", listFilters)
+	router.Put("/notifications/{id}", updateNotification)
 	router.Get("/notifications", listNotifications)
 	router.Get("/{uri:.*}", staticFiles)
 
@@ -60,29 +45,90 @@ func main() {
 	log.Fatal(http.ListenAndServe(bindAddress, router))
 }
 
-func addFilter (w http.ResponseWriter, req *http.Request) {
+func addFilter(w http.ResponseWriter, req *http.Request) {
 	filters = session.DB("github-notifications").C("filters")
+}
+
+func listFilters(w http.ResponseWriter, req *http.Request) {
+	var filtersResponse []map[string]interface{}
+
+	err := filters.Find(bson.M{}).All(&filtersResponse)
+	if err != nil {
+		log.Println(err)
+		w.WriteHeader(500)
+		return
+	}
+
+	b, err := json.Marshal(filtersResponse)
+	if err != nil {
+		log.Println(err)
+		w.WriteHeader(500)
+		return
+	}
+
+	w.Header().Set("Content-Type", "application/json")
+
+	w.WriteHeader(200)
+	w.Write(b)
+}
+
+func updateNotification(w http.ResponseWriter, req *http.Request) {
+	var id = req.URL.Query().Get(":id")
+	b, err := ioutil.ReadAll(req.Body)
+	if err != nil {
+		log.Println(err)
+		w.WriteHeader(404)
+		return
+	}
+
+	req.Body.Close()
+
+	log.Printf("Update notification '%s'", id)
+
+	var requestBody map[string]interface{}
+	err = json.Unmarshal(b, &requestBody)
+	if err != nil {
+		log.Println(err)
+		w.WriteHeader(400)
+		return
+	}
+
+	notification := make(map[string]interface{})
+	if done, ok := requestBody["done"]; ok {
+		notification["done"] = done
+	}
+	if favourite, ok := requestBody["favourite"]; ok {
+		notification["favourite"] = favourite
+	}
+
+	err = notifications.Update(bson.M{"_id": id}, bson.M{"$set": notification})
+	if err != nil {
+		log.Println(err)
+
+		if err == mgo.ErrNotFound {
+			w.WriteHeader(404)
+		} else {
+			w.WriteHeader(500)
+		}
+		return
+	}
+
+	w.WriteHeader(200)
 }
 
 func listNotifications(w http.ResponseWriter, req *http.Request) {
 	var defaultFilters = map[string]bson.M{
-		"inbox": bson.M{"done": false},
-		"done": bson.M{"done": true},
+		"inbox":      bson.M{"done": false},
+		"done":       bson.M{"done": true},
 		"favourites": bson.M{"favourite": true, "done": false},
 	}
 	var notificationsResponse []map[string]interface{}
 	var filterName = req.URL.Query().Get("filter")
 	var filter = defaultFilters[filterName]
 
-	//TODO validate that filter has been found
-	//if filter, ok := defaultFilters[filterName]; ok {
-	//
-	//}
-
 	log.Printf("Request for filter %s", filterName)
 
 	if len(filter) == 0 {
-		filters = session.DB("github-notifications").C("filters")
 		var customFilter map[string]interface{}
 		err := filters.Find(bson.M{"slug": filterName}).One(&customFilter)
 		if err != nil {
@@ -124,7 +170,7 @@ func staticFiles(w http.ResponseWriter, req *http.Request) {
 
 	log.Printf("Request for path %s", path)
 
-	HERE:
+HERE:
 
 	b, err := assets.Asset("../dist/" + path)
 	if err != nil {
