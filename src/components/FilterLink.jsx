@@ -14,11 +14,15 @@ class FilterLink extends Component {
     }
 
     componentWillMount() {
-        this.state.isActive = (this.context.router.location.pathname === ("/" + this.props.name));
+        this.setState({
+            isActive : (this.context.router.location.pathname === ("/" + this.props.name))
+        })
     }
 
-    componentWillUpdate() {
-        this.state.isActive = (this.context.router.location.pathname === ("/" + this.props.name));
+    componentWillReceiveProps() {
+        this.setState({
+            isActive: (this.context.router.location.pathname === ("/" + this.props.name))
+        });
     }
 
     handleClick() {
@@ -30,10 +34,9 @@ class FilterLink extends Component {
     }
 
     render() {
+        console.log(this.state.isActive);
         return (
             <Link to={"/" + this.props.name}
-                  id={"filter-" + this.props.name}
-                  data-filter={this.props.filter}
                   activeClassName="active"
                   className="mdl-navigation__link filters__link"
                   onClick={this.handleClick}>

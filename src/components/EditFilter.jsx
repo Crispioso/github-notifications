@@ -3,10 +3,6 @@ import Component from 'inferno-component';
 import { connect } from 'inferno-redux';
 
 class EditFilter extends Component {
-    constructor(props) {
-        super(props);
-    };
-
     render() {
         return (
             <div className="edit-filters">

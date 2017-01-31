@@ -27,7 +27,10 @@ class NotificationList extends Component {
         });
         const dispatch = this.props.dispatch;
 
-        this.state.notifications[notificationIndex][action] = checked;
+        // this.state.notifications[notificationIndex][action] = checked;
+        let newState = this.state;
+        newState.notifications[notificationIndex][action] = checked;
+        this.setState(newState);
 
         postNotificationUpdate(id, action, checked, this.state.parameters).then(response => {
             this.setState({

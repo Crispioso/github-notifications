@@ -1,6 +1,5 @@
 import Inferno from 'inferno';
 import Component from 'inferno-component';
-import { connect } from 'inferno-redux';
 
 class NotificationItem extends Component {
     constructor(props) {
@@ -32,8 +31,10 @@ class NotificationItem extends Component {
     }
 
     componentWillReceiveProps(nextProps, nextState) {
-        this.state.done = nextProps.done;
-        this.state.favourite = nextProps.favourite;
+        this.setState({
+            done: nextProps.done,
+            favourite: nextProps.favourite
+        });
     }
 
     render() {

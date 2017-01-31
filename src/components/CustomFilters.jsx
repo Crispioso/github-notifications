@@ -1,6 +1,5 @@
 import Inferno from 'inferno';
 import Component from 'inferno-component'
-import { connect } from 'inferno-redux'
 import { Link } from 'inferno-router';
 
 class CustomFilters extends Component {
