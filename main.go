@@ -81,6 +81,24 @@ func listNotifications(w http.ResponseWriter, req *http.Request) {
 
 	log.Printf("Request for filter %s", filterName)
 
+	if len(filter) == 0 {
+		filters = session.DB("github-notifications").C("filters")
+		var customFilter map[string]interface{}
+		err := filters.Find(bson.M{"slug": filterName}).One(&customFilter)
+		if err != nil {
+			log.Printf("Unable to find custom filter '%s'", filterName)
+			w.WriteHeader(500)
+			return
+		}
+
+		filter = make(map[string]interface{})
+		for k, v := range customFilter["queries"].(map[string]interface{}) {
+			filter[k] = v
+		}
+	}
+
+	log.Printf("Filter: %s", filter)
+
 	err := notifications.Find(filter).All(&notificationsResponse)
 	if err != nil {
 		log.Println(err)
